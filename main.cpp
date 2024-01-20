@@ -45,14 +45,6 @@ int Main::Init() {
 
 
 	//------- Buffer creation -------//
-	std::vector<float> vertices = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-	};
-
-
-
 	unsigned int VertexBuffer, AttributeBuffer;
 	glGenBuffers(1, &AttributeBuffer);
 	glGenBuffers(1, &VertexBuffer);
