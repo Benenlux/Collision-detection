@@ -1,3 +1,5 @@
+#pragma once
+
 //Standard libraries
 #include <iostream>
 #include <fstream>
@@ -15,6 +17,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+//Custom libraries
+#include "shader.h"
+
+
 class Main {
 public:
 	int Main::Init();
@@ -23,6 +29,7 @@ private:
 	int window_width = 800;
 	int window_height = 600;
 	
-	void Main::Input(ImGuiIO& io, GLFWwindow* window);
+	void Main::Input(GLFWwindow* window);
 	int Main::Exit();
+	
 };
