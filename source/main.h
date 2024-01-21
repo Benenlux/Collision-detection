@@ -19,6 +19,7 @@
 
 //Custom libraries
 #include "shader.h"
+#include "object.h"
 
 
 class Main {

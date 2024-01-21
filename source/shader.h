@@ -14,15 +14,10 @@
 
 class Shader {
 public:
-	std::vector<float> vertices = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-	};
-
+	
 	unsigned int Shader::CreateVertexShader(const std::string& path);
 	unsigned int Shader::CreateFragShader(const std::string& path);
-
+	void Shader::BindUniform4f(unsigned int shaderProgram, std::string uniformName, glm::vec4 data);
 
 private:
 	
@@ -30,13 +25,3 @@ private:
 	
 };
 
-class Object {
-	//note to self: Object will have it's own buffers.
-	//note to self: How the fuck am I going to draw 2 objects with different behavior
-public:
-	std::vector<float> vertices;
-	std::vector<unsigned int> indices;
-	glm::vec3 position;
-	Object(std::vector<float> vertices);
-
-};
