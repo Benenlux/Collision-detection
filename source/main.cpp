@@ -61,10 +61,10 @@ int Main::Init() {
 	//------- Object creation -------//
 	std::vector<float> vertices = {
 	// x	  y	   z
-	 0.5f,  0.3f, 0.0f,  // top right
-	 0.5f, -0.8f, 0.0f,  // bottom right
-	-0.5f, -0.8f, 0.0f,  // bottom left
-	-0.5f,  0.3f, 0.0f   // top left 
+	 0.1f,  0.1f, 0.0f,  // top right
+	 0.1f, -0.1f, 0.0f,  // bottom right
+	-0.1f, -0.1f, 0.0f,  // bottom left
+	-0.1f,  0.1f, 0.0f   // top left 
 	};
 
 	std::vector<unsigned int> indices = {
@@ -75,13 +75,15 @@ int Main::Init() {
 
 	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	Object object(vertices, indices, offset);
+	Object object(vertices, indices, offset, 20);
 	object.CreateBuffer();
 	unsigned int AttributeBuffer = object.AttributeBuffer;
 	
 	while (!glfwWindowShouldClose(window)) {
 
 		glfwPollEvents();
+
+		object.getPosition();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -92,11 +94,27 @@ int Main::Init() {
 			
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
+			ImGui::Text("Object \n x: %.3f	y: %.3f", object.position.x, object.position.y);
+			ImGui::Text("Time elapsed: %.2f", glfwGetTime());
+			ImGui::InputFloat("Mass", &object.mass);
 			ImGui::End();
 
 		}
 		
 		Input(window);
+		
+		if (ImGui::IsKeyDown(ImGuiKey_A)) {
+			object.offset.x -= 0.001f;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_D)) {
+			object.offset.x += 0.001f;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_W)) {
+			object.offset.y += 0.001f;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_S)) {
+			object.offset.y -= 0.001f;
+		}
 
 		ImGui::Render();
 
@@ -104,6 +122,8 @@ int Main::Init() {
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		shader.BindUniform3f(shaderProgram, "offset", object.offset);
 
 		glUseProgram(shaderProgram);
 
