@@ -12,11 +12,15 @@ public:
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
 	glm::vec3 offset;
+	glm::vec3 position;
+	float mass;
+	float velocity;
+	glm::vec3 dimensions;
 	unsigned int VertexBuffer, AttributeBuffer, IndexBuffer;
 
-	Object(std::vector<float> vertices, std::vector<unsigned int> indices, glm::vec3 offset);
+	Object(std::vector<float>, std::vector<unsigned int>, glm::vec3, float);
 	void Object::CreateBuffer();
-	
+	void Object::getPosition();
 private:
 	
 };

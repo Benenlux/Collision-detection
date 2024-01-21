@@ -1,9 +1,15 @@
 #include "object.h"
 
-Object::Object(std::vector<float> verticesIn, std::vector<unsigned int> indicesIn, glm::vec3 offsetIn) {
+Object::Object(std::vector<float> verticesIn, std::vector<unsigned int> indicesIn, glm::vec3 offsetIn, float massIn) {
 	vertices = verticesIn;
 	indices = indicesIn;
 	offset = offsetIn;
+	mass = massIn;
+	dimensions = glm::vec3(
+		vertices[0] - vertices[9],
+		vertices[1] - vertices[10],
+		vertices[3] - vertices[11]
+	);
 }
 
 void Object::CreateBuffer() {
@@ -28,4 +34,11 @@ void Object::CreateBuffer() {
 
 	glBindVertexArray(0);
 
+}
+
+void Object::getPosition() {
+	position = glm::vec3(
+		(vertices[0] + vertices[9]) + offset.x,
+		(vertices[1] + vertices[7]) + offset.y,
+		(vertices[2] + vertices[11]) + offset.z);
 }
