@@ -17,7 +17,7 @@ public:
 	
 	unsigned int Shader::CreateVertexShader(const std::string& path);
 	unsigned int Shader::CreateFragShader(const std::string& path);
-	void Shader::BindUniform4f(unsigned int shaderProgram, std::string uniformName, glm::vec4 data);
+	void Shader::BindUniform3f(unsigned int shaderProgram, std::string uniformName, glm::vec3 data);
 
 private:
 	
