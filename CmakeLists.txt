@@ -10,7 +10,9 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
-add_executable(App  "source/main.cpp"  "source/main.h" "source/shader.h" "source/shader.cpp" "source/object.cpp" "source/object.h")
+add_executable(App  "source/main.cpp"  "source/main.h" "source/shader.h" 
+"source/shader.cpp" "source/object.cpp" "source/object.h" "source/VertexBuffer.h" 
+"source/VertexBuffer.cpp" "source/IndexBuffer.cpp" "source/IndexBuffer.h")
 
 target_link_libraries(App PRIVATE glad::glad imgui::imgui glfw glm::glm)
 
