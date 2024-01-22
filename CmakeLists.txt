@@ -10,12 +10,15 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
-add_executable(App  "source/main.cpp"  "source/main.h" "source/shader.h" 
-"source/shader.cpp" "source/object.cpp" "source/object.h" "source/VertexBuffer.h" 
-"source/VertexBuffer.cpp" "source/IndexBuffer.cpp" "source/IndexBuffer.h")
+set(graphics "${CMAKE_CURRENT_SOURCE_DIR}/source/graphics")
+set(SOURCES source/main.cpp ${graphics}/IndexBuffer.cpp ${graphics}/shader.cpp ${graphics}/VertexArray.cpp ${graphics}/VertexBuffer.cpp)
+set(HEADERS source/main.h ${graphics}/IndexBuffer.h ${graphics}/shader.h ${graphics}/VertexArray.h ${graphics}/VertexBuffer.h ${graphics}/VertexBufferLayout.h )
+
+add_executable(App  ${SOURCES} ${HEADERS})
 
 target_link_libraries(App PRIVATE glad::glad imgui::imgui glfw glm::glm)
 
 target_compile_definitions(App PRIVATE
 		RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources"
+		GRAPHICS_DIR= "${CMAKE_CURRENT_SOURCE_DIR}/source/graphics"
 	)
