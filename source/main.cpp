@@ -72,18 +72,38 @@ int Main::Init() {
 		1, 2, 3
 	};
 
+	unsigned int AttributeBuffer;
+	glGenVertexArrays(1, &AttributeBuffer);
+
+	glBindVertexArray(AttributeBuffer);
+
+	
+	IndexBuffer ib(indices.data(), indices.size());
+	ib.Bind();
+
+	VertexBuffer vb(vertices.data(), vertices.size());
+	vb.Bind();
+	
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+	
 
 	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
+	
 
-	Object object(vertices, indices, offset, 20);
-	object.CreateBuffer();
-	unsigned int AttributeBuffer = object.AttributeBuffer;
+
+	float bottom = -1.0f;
 	
 	while (!glfwWindowShouldClose(window)) {
 
 		glfwPollEvents();
 
-		object.getPosition();
+		//object.getPosition();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -94,27 +114,18 @@ int Main::Init() {
 			
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
-			ImGui::Text("Object \n x: %.3f	y: %.3f", object.position.x, object.position.y);
+			//ImGui::Text("Object \n x: %.3f	y: %.3f", object.position.x, object.position.y);
 			ImGui::Text("Time elapsed: %.2f", glfwGetTime());
-			ImGui::InputFloat("Mass", &object.mass);
+			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			
 			ImGui::End();
 
 		}
 		
 		Input(window);
+
 		
-		if (ImGui::IsKeyDown(ImGuiKey_A)) {
-			object.offset.x -= 0.001f;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_D)) {
-			object.offset.x += 0.001f;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_W)) {
-			object.offset.y += 0.001f;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_S)) {
-			object.offset.y -= 0.001f;
-		}
+
 
 		ImGui::Render();
 
@@ -122,8 +133,6 @@ int Main::Init() {
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		shader.BindUniform3f(shaderProgram, "offset", object.offset);
 
 		glUseProgram(shaderProgram);
 

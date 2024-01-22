@@ -20,6 +20,8 @@
 //Custom libraries
 #include "shader.h"
 #include "object.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
 
 class Main {
