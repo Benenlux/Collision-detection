@@ -72,26 +72,18 @@ int Main::Init() {
 		1, 2, 3
 	};
 
-	unsigned int AttributeBuffer;
-	glGenVertexArrays(1, &AttributeBuffer);
-
-	glBindVertexArray(AttributeBuffer);
-
-	
-	IndexBuffer ib(indices.data(), indices.size());
-	ib.Bind();
+	VertexArray va;
+	va.Bind();
 
 	VertexBuffer vb(vertices.data(), vertices.size());
 	vb.Bind();
-	
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	VertexBufferLayout layout;
+	layout.Push<float>(3);
+	va.AddBuffer(vb, layout);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-	
+	IndexBuffer ib(indices.data(), indices.size()); 
+	ib.Bind(); 
 
 	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
 	
@@ -136,7 +128,7 @@ int Main::Init() {
 
 		glUseProgram(shaderProgram);
 
-		glBindVertexArray(AttributeBuffer);
+		va.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
