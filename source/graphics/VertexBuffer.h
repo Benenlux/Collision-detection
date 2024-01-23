@@ -7,8 +7,7 @@ private:
 	unsigned int m_RenderID;
 
 public:
-	VertexBuffer(const void* data, unsigned int size);
-	~VertexBuffer();
+	void Delete();
 
 	void Create(const void* data, unsigned int size);
 	void Bind() const;
