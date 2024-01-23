@@ -11,8 +11,6 @@ int Main::Init() {
 		return -1;
 	}
 
-	Shader shader;
-
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 
@@ -43,19 +41,9 @@ int Main::Init() {
 	ImGui_ImplOpenGL3_Init(glsl_version);	
 
 	//------- Shader creation -------//
-	unsigned int vertexShader = shader.CreateVertexShader(RESOURCE_DIR "/vertexShader.glsl");
-	unsigned int fragmentShader = shader.CreateFragShader(RESOURCE_DIR "/fragmentShader.glsl");
+	Shader shader;
 
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 
 	//------- Object creation -------//
 	std::vector<float> vertices = {
@@ -71,19 +59,23 @@ int Main::Init() {
 		1, 2, 3
 	};
 
+	
 	VertexArray va;
 	va.Bind();
+	
+	Properties properties_cube1{
+		1,
+		true,
+	};
 
-	VertexBuffer vb(vertices.data(), vertices.size());
-	vb.Bind();
+	Model model(vertices, indices, shader, properties_cube1);
+	model.CreateVertexBuffer();
 
 	VertexBufferLayout layout;
 	layout.Push<float>(3);
-	va.AddBuffer(vb, layout);
+	va.AddBuffer(model.vb, layout);
 
-	IndexBuffer ib(indices.data(), indices.size()); 
-	ib.Bind(); 
-
+	model.CreateIndexBuffer();
 
 
 	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -95,8 +87,6 @@ int Main::Init() {
 	while (!glfwWindowShouldClose(window)) {
 
 		glfwPollEvents();
-
-		//object.getPosition();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -124,10 +114,10 @@ int Main::Init() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
+		glUseProgram(shader.m_shaderProgram);
 
 		va.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		model.Render();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

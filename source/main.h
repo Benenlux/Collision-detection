@@ -24,6 +24,7 @@
 #include "graphics/VertexArray.h"
 #include "graphics/VertexBufferLayout.h"
 #include "graphics/Model.h"
+#include "physics/Properties.h"
 
 
 class Main {
