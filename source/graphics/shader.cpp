@@ -1,5 +1,33 @@
 #include "shader.h"
 
+void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath) {
+	m_vertexShader = CreateVertexShader(vertexPath);
+	std::cout << fragmentPath;
+	m_fragmentShader = CreateFragShader(fragmentPath);
+	m_shaderProgram = glCreateProgram();
+
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+
+	glLinkProgram(m_shaderProgram);
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+}
+
+void Shader::AttachFragment() {
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+}
+
+void Shader::AttachVertex() {
+	glAttachShader(m_shaderProgram, m_vertexShader);
+}
+
+void Shader::LinkProgram() {
+	glLinkProgram(m_shaderProgram);
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+}
+
 unsigned int Shader::CreateVertexShader(const std::string& path) {
 	std::string shader = Load_Shader(path);
 	const char* shaderSource = shader.c_str();
@@ -41,8 +69,8 @@ unsigned int Shader::CreateFragShader(const std::string& path) {
 	return fragmentShader;
 }  
 
-void Shader::BindUniform3f(unsigned int shaderProgram, std::string uniformName, glm::vec3 data) {
-	int vertexColorLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+void Shader::BindUniform3f(std::string uniformName, glm::vec3 data) {
+	int vertexColorLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
 	glUniform3f(vertexColorLocation, data.x, data.y, data.z);
 }
 
