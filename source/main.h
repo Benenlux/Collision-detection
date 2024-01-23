@@ -23,6 +23,7 @@
 #include "graphics/VertexBuffer.h"
 #include "graphics/VertexArray.h"
 #include "graphics/VertexBufferLayout.h"
+#include "graphics/Model.h"
 
 
 class Main {

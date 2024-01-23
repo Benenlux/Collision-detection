@@ -22,7 +22,6 @@ int Main::Init() {
 
 	glfwMakeContextCurrent(window);
 
-	
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -85,6 +84,8 @@ int Main::Init() {
 	IndexBuffer ib(indices.data(), indices.size()); 
 	ib.Bind(); 
 
+
+
 	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
 	
 
@@ -116,12 +117,9 @@ int Main::Init() {
 		
 		Input(window);
 
-		
-
-
 		ImGui::Render();
 
-		
+
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
