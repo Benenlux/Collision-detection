@@ -3,5 +3,5 @@
 struct Properties {
 	float mass = 1;
 	bool gravityEnabled = false;
-	float gravity = 1;
+	float scale = 0.000000001;
 };
