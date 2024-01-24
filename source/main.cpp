@@ -46,6 +46,9 @@ int Main::Init() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 
 	//------- Object creation -------//
+	
+
+	//------- Cube -------//
 	std::vector<float> vertices = {
 	// x	  y	   z
 	 0.1f,  0.1f, 0.0f,  // top right
@@ -59,28 +62,24 @@ int Main::Init() {
 		1, 2, 3
 	};
 
-	
-	VertexArray va;
-	va.Bind();
-	
-	Properties properties_cube1{
-		1,
-		true,
+	//------- Triangle -------//
+	std::vector<float> vertices2 = {
+		-1.0f, -1.0f, 0.0f, // bottom left
+		-1.0f, 0.0f, 0.0f, // top left
+		0.0f, -1.0f, 0.0f, // bottom right
 	};
 
-	Model model(vertices, indices, shader, properties_cube1);
-	model.CreateVertexBuffer();
-
-	VertexBufferLayout layout;
-	layout.Push<float>(3);
-	va.AddBuffer(model.vb, layout);
-
-	model.CreateIndexBuffer();
+	std::vector<unsigned int> indices2 = {
+		0, 1, 2
+	};
 
 
-	glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
+	VertexBufferLayout cubeLayout;
+
+	Model Cube(vertices, indices, shader, cubeLayout, 3);
 	
-
+	VertexBufferLayout triangleLayout;
+	Model Triangle(vertices2, indices2, shader, triangleLayout, 3);	
 
 	float bottom = -1.0f;
 	
@@ -97,27 +96,28 @@ int Main::Init() {
 			
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
-			//ImGui::Text("Object \n x: %.3f	y: %.3f", object.position.x, object.position.y);
+			ImGui::Text("x: %0.3f   y: %0.3f", Cube.m_translation.x, Cube.m_translation.y);
+			ImGui::SliderFloat("scale", &Cube.scale, 0.1f, 2.0f);
 			ImGui::Text("Time elapsed: %.2f", glfwGetTime());
 			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-			
+			ImGui::Checkbox("Gravity", &Cube.rb.properties.gravityEnabled);
 			ImGui::End();
 
 		}
 		
-		Input(window);
+		Input(window, io);
 
 		ImGui::Render();
 
-
+		
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(shader.m_shaderProgram);
 
-		va.Bind();
-		model.Render();
+		Cube.Render();
+		Triangle.Render();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -128,7 +128,7 @@ int Main::Init() {
 	Main::Exit();
 }
 
-void Main::Input(GLFWwindow* window) {
+void Main::Input(GLFWwindow* window, ImGuiIO& io) {
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 		glfwSetWindowShouldClose(window, true);
 	}
