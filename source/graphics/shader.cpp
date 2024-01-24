@@ -2,7 +2,6 @@
 
 void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath) {
 	m_vertexShader = CreateVertexShader(vertexPath);
-	std::cout << fragmentPath;
 	m_fragmentShader = CreateFragShader(fragmentPath);
 	m_shaderProgram = glCreateProgram();
 
@@ -72,6 +71,11 @@ unsigned int Shader::CreateFragShader(const std::string& path) {
 void Shader::BindUniform3f(std::string uniformName, glm::vec3 data) {
 	int vertexColorLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
 	glUniform3f(vertexColorLocation, data.x, data.y, data.z);
+}
+
+void Shader::BindMat4(std::string uniformName, glm::mat4 data) {
+	int vertexColorLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniformMatrix4fv(vertexColorLocation, 1, GL_FALSE, glm::value_ptr(data));
 }
 
 std::string Shader::Load_Shader(const std::string& path) {

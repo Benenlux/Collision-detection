@@ -11,6 +11,7 @@
 
 //Math libraries
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class Shader {
 public:
@@ -21,6 +22,7 @@ public:
 	void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath);
 	
 	void Shader::BindUniform3f(std::string uniformName, glm::vec3 data);
+	void Shader::BindMat4(std::string uniformName, glm::mat4 data);
 	void Shader::AttachFragment();
 	void Shader::AttachVertex();
 	void Shader::LinkProgram();
