@@ -46,41 +46,10 @@ int Main::Init() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 
 	//------- Object creation -------//
+
+	Model Cube;
+	Cube.CreateCube(0.2f, 0.2f, shader);
 	
-
-	//------- Cube -------//
-	std::vector<float> vertices = {
-	// x	  y	   z
-	 0.1f,  0.1f, 0.0f,  // top right
-	 0.1f, -0.1f, 0.0f,  // bottom right
-	-0.1f, -0.1f, 0.0f,  // bottom left
-	-0.1f,  0.1f, 0.0f   // top left 
-	};
-
-	std::vector<unsigned int> indices = {
-		0, 1, 3,
-		1, 2, 3
-	};
-
-	//------- Triangle -------//
-	std::vector<float> vertices2 = {
-		-1.0f, -1.0f, 0.0f, // bottom left
-		-1.0f, 0.0f, 0.0f, // top left
-		0.0f, -1.0f, 0.0f, // bottom right
-	};
-
-	std::vector<unsigned int> indices2 = {
-		0, 1, 2
-	};
-
-
-	VertexBufferLayout cubeLayout;
-
-	Model Cube(vertices, indices, shader, cubeLayout, 3);
-	
-	VertexBufferLayout triangleLayout;
-	Model Triangle(vertices2, indices2, shader, triangleLayout, 3);	
-
 	float bottom = -1.0f;
 	
 	while (!glfwWindowShouldClose(window)) {
@@ -98,8 +67,8 @@ int Main::Init() {
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
 			ImGui::Text("x: %0.3f   y: %0.3f", Cube.m_translation.x, Cube.m_translation.y);
 			ImGui::SliderFloat("scale", &Cube.scale, 0.1f, 2.0f);
-			ImGui::Text("Time elapsed: %.2f", glfwGetTime());
 			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::Text("top left: %.3f, %.3f", Cube.m_boundingBox.x, Cube.m_boundingBox.y);
 			ImGui::Checkbox("Gravity", &Cube.rb.properties.gravityEnabled);
 			ImGui::End();
 
@@ -117,7 +86,6 @@ int Main::Init() {
 		glUseProgram(shader.m_shaderProgram);
 
 		Cube.Render();
-		Triangle.Render();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
