@@ -9,6 +9,8 @@ void VertexBuffer::Create(const void* data, unsigned int size) {
 
 }
 
+
+
 void VertexBuffer::Delete() {
 	glDeleteBuffers(1, &m_RenderID);
 }

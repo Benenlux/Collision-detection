@@ -18,13 +18,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 //Custom libraries
-#include "graphics/shader.h"
-#include "graphics/IndexBuffer.h"
-#include "graphics/VertexBuffer.h"
-#include "graphics/VertexArray.h"
-#include "graphics/VertexBufferLayout.h"
-#include "graphics/Model.h"
-#include "physics/Properties.h"
+#include "Scene.h"
 
 
 class Main {

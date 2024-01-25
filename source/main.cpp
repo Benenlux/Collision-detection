@@ -40,16 +40,39 @@ int Main::Init() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);      
 	ImGui_ImplOpenGL3_Init(glsl_version);	
 
-	//------- Shader creation -------//
-	Shader shader;
-
-	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
-
 	//------- Object creation -------//
-
-	Model Cube;
-	Cube.CreateCube(0.2f, 0.2f, shader);
 	
+	Shader shader;
+	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
+	std::vector<float> vertices = {
+		-0.2f,  0.2f,  // top left
+		-0.2f, -0.2f,  // bottom left
+		 0.2f, -0.2f,  // bottom right
+		 0.2f,  0.2f,  // top right 
+		-0.8f,  0.2f,
+		-0.8f, -0.2f,
+		-0.4f, -0.2f,
+		-0.4f,  0.2f
+	};
+	
+	std::vector<unsigned int> indices = {
+		0, 1, 2,
+		2, 3, 0,
+		4, 5, 6,
+		6, 7, 4
+	};
+	VertexArray va;
+	va.Bind();
+	VertexBufferLayout layout;
+	layout.Push<float>(2);
+	
+	VertexBuffer vb;
+	vb.Create(&vertices, vertices.size() * sizeof(float));
+	va.AddBuffer(vb, layout);
+	IndexBuffer ib;
+	ib.Create(indices.data(), indices.size());
+	va.Bind();
+
 	float bottom = -1.0f;
 	
 	while (!glfwWindowShouldClose(window)) {
@@ -65,11 +88,6 @@ int Main::Init() {
 			
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
-			ImGui::Text("x: %0.3f   y: %0.3f", Cube.m_translation.x, Cube.m_translation.y);
-			ImGui::SliderFloat("scale", &Cube.scale, 0.1f, 2.0f);
-			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-			ImGui::Text("top left: %.3f, %.3f", Cube.m_boundingBox.x, Cube.m_boundingBox.y);
-			ImGui::Checkbox("Gravity", &Cube.rb.properties.gravityEnabled);
 			ImGui::End();
 
 		}
@@ -83,9 +101,12 @@ int Main::Init() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		
+
 		glUseProgram(shader.m_shaderProgram);
 
-		Cube.Render();
+		va.Bind();
+		glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, 0);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

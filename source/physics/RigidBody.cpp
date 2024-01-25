@@ -1,15 +1,12 @@
 #include "RigidBody.h"
 
-void RigidBody::SetGravity(bool gravityEnabled) {
-	properties.gravityEnabled = gravityEnabled;
-}
+
 
 void RigidBody::Update() {
 	dt = glfwGetTime() - dt;
+
+	velocity.y -= 9.81 * dt;
 	
-	if (properties.gravityEnabled) {
-		velocity.y -= 9.81 * dt* properties.scale;
-	}
 
 }
 
