@@ -28,6 +28,7 @@ private:
 	//Model buffers will be dynamic, so the vertices can be directly updated through the Model class. 
 
 	VertexBufferLayout modelsLayout;
+	std::vector<float> modelsVertices;
 	VertexBuffer modelsVB;
 	VertexArray modelsVA;
 	IndexBuffer modelsIB;

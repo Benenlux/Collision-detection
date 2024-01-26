@@ -8,13 +8,18 @@ void Model::CreateCube(float height, float width, float x_coordinate, float y_co
 	m_width = width;
 	float width_half = width / 2;
 	float height_half = height / 2;
+	glm::vec2 top_left = glm::vec2(-width_half + x_coordinate, height_half + y_coordinate);
+	glm::vec2 top_right = glm::vec2(width_half + x_coordinate, height_half + y_coordinate);
+	glm::vec2 bottom_left = glm::vec2(-width_half + x_coordinate, -height_half + y_coordinate);
+	glm::vec2 bottom_right = glm::vec2(width_half + x_coordinate, -height_half + y_coordinate);
 	m_vertices = {
-		-width_half + position.x,  height_half + position.y,// top left
-		-width_half + position.x, -height_half + position.y,// bottom left
-		 width_half + position.x, -height_half + position.y,// bottom right
-		 width_half + position.x,  height_half + position.y // top right
+		top_left.x, top_left.y,
+		bottom_left.x, bottom_left.y,
+		bottom_right.x, bottom_right.y,
+		top_left.x, top_left.y,
+		top_right.x, top_right.y,
+		bottom_right.x, bottom_right.y
 	};
-		
 }
 
 void Model::Render() {

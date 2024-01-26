@@ -13,5 +13,5 @@ public:
 	void Create(const void* data, unsigned int size);
 	void Bind() const;
 	void Unbind() const;
-
+	void Update(unsigned int offset, unsigned int size, const void* data);
 };

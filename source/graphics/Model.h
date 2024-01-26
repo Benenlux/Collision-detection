@@ -22,10 +22,11 @@
 class Model : public RigidBody {
 public:
 	std::vector<float> m_vertices;
-	std::vector<unsigned int> m_indices;
+	std::optional<std::vector<unsigned int>> m_indices;
 	glm::vec2 position = glm::vec2(0.0f, 0.0f);
 
 	void Model::CreateCube(float height, float width, float x_coordinate, float y_coordinate);
+
 	//Index and vertex buffers are handled by the scene
 	
 	//TODO: Add a render function which calls the update function from rigidbody

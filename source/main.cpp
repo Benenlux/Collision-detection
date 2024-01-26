@@ -44,34 +44,10 @@ int Main::Init() {
 	
 	Shader shader;
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
-	std::vector<float> vertices = {
-		-0.2f,  0.2f,  // top left
-		-0.2f, -0.2f,  // bottom left
-		 0.2f, -0.2f,  // bottom right
-		 0.2f,  0.2f,  // top right 
-		-0.8f,  0.2f,
-		-0.8f, -0.2f,
-		-0.4f, -0.2f,
-		-0.4f,  0.2f
-	};
-	
-	std::vector<unsigned int> indices = {
-		0, 1, 2,
-		2, 3, 0,
-		4, 5, 6,
-		6, 7, 4
-	};
-	VertexArray va;
-	va.Bind();
-	VertexBufferLayout layout;
-	layout.Push<float>(2);
-	
-	VertexBuffer vb;
-	vb.Create(&vertices, vertices.size() * sizeof(float));
-	va.AddBuffer(vb, layout);
-	IndexBuffer ib;
-	ib.Create(indices.data(), indices.size());
-	va.Bind();
+	Scene scene;
+
+	scene.AddModel(0.5f, 0.5f, 0.0f, 0.0f);
+	scene.BindObjects();
 
 	float bottom = -1.0f;
 	
@@ -105,8 +81,8 @@ int Main::Init() {
 
 		glUseProgram(shader.m_shaderProgram);
 
-		va.Bind();
-		glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, 0);
+		
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
