@@ -17,14 +17,18 @@ void Model::CreateCube(float height, float width, float x_coordinate, float y_co
 		bottom_right.x, bottom_right.y,
 		top_right.x, top_right.y
 	};
+	translate = glm::vec2(0.0f, 0.0f);
 }
 
-void Model::Update() {
-	translate += glm::vec2(0.1f, 0.0f);
+void Model::Update(float deltaTime) {
+	if (has_physics) {
+		//translate = translate + RigidBody::Update(deltaTime);
+	}
 	m_vertices = {
 		top_left.x + translate.x, top_left.y + translate.y,
 		bottom_left.x + translate.x, bottom_left.y + translate.y,
 		bottom_right.x + translate.x, bottom_right.y + translate.y,
 		top_right.x + translate.x, top_right.y + translate.y
 	};
+
 }

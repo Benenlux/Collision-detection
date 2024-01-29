@@ -22,20 +22,20 @@
 class Model : public RigidBody {
 public:
 	std::vector<float> m_vertices;
-	glm::vec2 translate;
-
 	glm::vec2 top_left;
-	glm::vec2 top_right;
-	glm::vec2 bottom_left;
-	glm::vec2 bottom_right;
 
 	void Model::CreateCube(float height, float width, float x_coordinate, float y_coordinate);
 
 	//Index and vertex buffers are handled by the scene
 	
 	//TODO: Add a render function which calls the update function from rigidbody
-	void Model::Update();
-
+	void Model::Update(float deltaTime);
 private:
+	bool has_physics = true;
+	glm::vec2 translate;
+
 	
+	glm::vec2 top_right;
+	glm::vec2 bottom_left;
+	glm::vec2 bottom_right;
 };
