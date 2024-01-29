@@ -24,6 +24,7 @@ void Scene::AddModel(float height, float width, float x_coord, float y_coord) {
 }
 
 void Scene::RenderObjects() {
+	UpdateObjects();
 	modelsVA.Bind();
 	glDrawElements(GL_TRIANGLES, models_indices.size(), GL_UNSIGNED_INT, nullptr);
 }
@@ -39,6 +40,7 @@ void Scene::InitObjects() {
 		models_indices.push_back(0 + offset);
 		std::cout << "Indices added" << std::endl;
 	}
+	std::cout << models_vertices.size() << std::endl;
 
 	modelsVA.Bind();
 	modelsVB.Create(models_vertices.data(), models_vertices.size());
@@ -49,21 +51,23 @@ void Scene::InitObjects() {
 
 void Scene::UpdateObjects() {
 	for (int i = 0; i < m_models.size(); i++) {
-		m_models[i].Update();
+		m_models[i].Update(deltaTime);
+		std::cout<< m_models[i].top_left.y << std::endl;
 	}
 	models_vertices.clear();
 	for (int i = 0; i < m_models.size(); i++) {
 		for (int j = 0; j < m_models[i].m_vertices.size(); j++) {
 			models_vertices.push_back(m_models[i].m_vertices[j]);
+			
 		}
 	}
 	modelsVB.Bind();
 	glBufferSubData(GL_ARRAY_BUFFER, 0, models_vertices.size() * sizeof(GLfloat), models_vertices.data());
-	
 }
 
-void Scene::RenderAll() {
-		
+void Scene::RenderAll(float time){
+	deltaTime = time;
+	RenderObjects();
 }
 
 void Scene::RenderTerrain() {

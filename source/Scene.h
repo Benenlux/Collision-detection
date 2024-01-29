@@ -49,7 +49,7 @@ public:
 	void InitObjects();
 	void UpdateObjects();
 
-	void RenderAll();
+	void RenderAll(float time);
 	//Iterates through the models list, checks for collissions and calls the render function for each model
 	//If there is a collission, call the collission function from the rigidbody class
 	void RenderObjects();
