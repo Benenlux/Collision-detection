@@ -28,7 +28,7 @@ private:
 	//Model buffers will be dynamic, so the vertices can be directly updated through the Model class. 
 
 	VertexBufferLayout modelsLayout;
-	std::vector<float> modelsVertices;
+	
 	VertexBuffer modelsVB;
 	VertexArray modelsVA;
 	IndexBuffer modelsIB;
@@ -39,13 +39,15 @@ private:
 
 public:
 	unsigned sceneShader;
+	std::vector<float> models_vertices;
+	std::vector<unsigned int> models_indices;
 
 	Scene();
 	~Scene();
 	void AddModel(float height, float width, float x_coord, float y_coord);
 
-	void BindObjects();
-
+	void InitObjects();
+	void UpdateObjects();
 
 	void RenderAll();
 	//Iterates through the models list, checks for collissions and calls the render function for each model

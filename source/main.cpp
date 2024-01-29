@@ -45,9 +45,10 @@ int Main::Init() {
 	Shader shader;
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	Scene scene;
+	scene.AddModel(0.5f, 0.5f, 0.1f, 0.1f);
+	scene.InitObjects();
+	
 
-	scene.AddModel(0.5f, 0.5f, 0.0f, 0.0f);
-	scene.BindObjects();
 
 	float bottom = -1.0f;
 	
@@ -67,6 +68,10 @@ int Main::Init() {
 			ImGui::End();
 
 		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey_D)) {
+			scene.UpdateObjects();
+		}
 		
 		Input(window, io);
 
@@ -82,7 +87,7 @@ int Main::Init() {
 		glUseProgram(shader.m_shaderProgram);
 
 		
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		scene.RenderObjects();
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
