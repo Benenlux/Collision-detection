@@ -22,7 +22,7 @@ void Model::CreateCube(float height, float width, float x_coordinate, float y_co
 
 void Model::Update(float deltaTime) {
 	if (has_physics) {
-		//translate = translate + RigidBody::Update(deltaTime);
+		translate = translate + RigidBody::Update(deltaTime);
 	}
 	m_vertices = {
 		top_left.x + translate.x, top_left.y + translate.y,
