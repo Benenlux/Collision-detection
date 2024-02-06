@@ -2,13 +2,14 @@
 
 #include <glm/glm.hpp>
 #include <iostream>
+#include <cmath>
 
 #include <GLFW/glfw3.h>
 
 class RigidBody {
 public:
 	float dt = 0.0f;
-	glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec2 velocity = glm::vec2(0.0f, 0.0f);
 	
 
 	glm::vec2 Update(float deltaTime);
@@ -20,6 +21,6 @@ public:
 private:
 	
 	glm::vec3 RigidBody::GetVelocity();
-	glm::vec3 force = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec2 force = glm::vec2(0.0f, 0.0f);
 	float mass = 1;
 };

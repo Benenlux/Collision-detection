@@ -2,15 +2,20 @@
 
 
 
-glm::vec2 RigidBody::Update(float deltaTime) {
+glm::vec2 RigidBody::Update(float deltaTime){
+	dt = deltaTime;
+	force.y = -9.81f * mass;
+	force * 0.000000001f;
+	velocity =+ mass / force;
 
-	force.y =+ -9.81f * mass;
+	//If the force in the x direction is 0, velocity turns into inf, this is a fix for that, albeit temporary
+	if (std::isinf(velocity.x) != 0) {
+		velocity.x = 0;
+	}
 	
-	force * 0.0000001f;
-	velocity =+ force / mass;
-	return GetVelocity();
+	return velocity*dt;
 }
 
 glm::vec3 RigidBody::GetVelocity() {
-	return velocity/dt;
+	return glm::vec3(0.0f, 0.0f, 0.0f);
 }
