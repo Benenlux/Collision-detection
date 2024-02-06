@@ -20,7 +20,6 @@ void Scene::AddModel(float height, float width, float x_coord, float y_coord) {
 	for (int i = 0; i < model.m_vertices.size(); i++) {
 		models_vertices.push_back(model.m_vertices[i]);
 	}
-	std::cout << "Model added" << std::endl;
 }
 
 void Scene::RenderObjects() {
@@ -30,6 +29,7 @@ void Scene::RenderObjects() {
 }
 
 void Scene::InitObjects() {
+	std::cout << "Initializing " << m_models.size() << " models" << std::endl;
 	for (int i = 0; i < m_models.size(); i++) {
 		int offset = i * 4;
 		models_indices.push_back(0 + offset);
@@ -38,9 +38,7 @@ void Scene::InitObjects() {
 		models_indices.push_back(2 + offset);
 		models_indices.push_back(3 + offset);
 		models_indices.push_back(0 + offset);
-		std::cout << "Indices added" << std::endl;
 	}
-	std::cout << models_vertices.size() << std::endl;
 
 	modelsVA.Bind();
 	modelsVB.Create(models_vertices.data(), models_vertices.size());
@@ -52,7 +50,6 @@ void Scene::InitObjects() {
 void Scene::UpdateObjects() {
 	for (int i = 0; i < m_models.size(); i++) {
 		m_models[i].Update(deltaTime);
-		std::cout<< m_models[i].top_left.y << std::endl;
 	}
 	models_vertices.clear();
 	for (int i = 0; i < m_models.size(); i++) {
@@ -61,6 +58,7 @@ void Scene::UpdateObjects() {
 			
 		}
 	}
+
 	modelsVB.Bind();
 	glBufferSubData(GL_ARRAY_BUFFER, 0, models_vertices.size() * sizeof(GLfloat), models_vertices.data());
 }
