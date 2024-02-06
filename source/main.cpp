@@ -46,12 +46,13 @@ int Main::Init() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	Scene scene;
 	scene.AddModel(0.5f, 0.5f, 0.7f, 0.1f);
+	scene.AddModel(0.5f, 0.5f, -0.7f, -0.1f);
 	scene.InitObjects();
-	
 
 
 	float time = 0;
 	float pastTime = 0;
+
 	while (!glfwWindowShouldClose(window)) {
 
 		glfwPollEvents();
