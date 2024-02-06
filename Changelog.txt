@@ -1,0 +1,9 @@
+[06/02/2024]
+Done:
+- Fixed a bug where the models would disappear if physics were enabled
+- Fixed a bug where velocity would become infinite if no force was applied
+
+Todo:
+- Turn Createcube function into a constructor for the model class, since each instance only holds one model anyway
+- Make it so that pointers to the model class are stored instead of the class itself
+- Check framerate and optimize if necessary
