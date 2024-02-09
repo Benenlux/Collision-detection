@@ -46,7 +46,7 @@ public:
 	~Scene();
 	void AddModel(float height, float width, float x_coord, float y_coord);
 
-	void InitObjects();
+	void Init();
 	void UpdateObjects();
 
 	void RenderAll(float time);

@@ -3,7 +3,6 @@
 Scene::Scene() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	sceneShader = shader.m_shaderProgram;
-	AddModel(0.5f, 0.5f, 0.0f, 0.0f);
 }
 
 Scene::~Scene() {
@@ -20,6 +19,21 @@ void Scene::AddModel(float height, float width, float x_coord, float y_coord) {
 	for (int i = 0; i < model.m_vertices.size(); i++) {
 		models_vertices.push_back(model.m_vertices[i]);
 	}
+	
+	for (int i = 0; i < 1; i++) {
+		int offset = (m_models.size()-1) * 4;
+		models_indices.push_back(0 + offset);
+		models_indices.push_back(1 + offset);
+		models_indices.push_back(2 + offset);
+		models_indices.push_back(2 + offset);
+		models_indices.push_back(3 + offset);
+		models_indices.push_back(0 + offset);
+	}
+	/*
+	modelsVA.Bind();
+	modelsVB.Update(models_vertices.data(), models_vertices.size());
+	modelsIB.Update(models_indices.data(), models_indices.size());
+	*/
 }
 
 void Scene::RenderObjects() {
@@ -28,18 +42,7 @@ void Scene::RenderObjects() {
 	glDrawElements(GL_TRIANGLES, models_indices.size(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Scene::InitObjects() {
-	std::cout << "Initializing " << m_models.size() << " models" << std::endl;
-	for (int i = 0; i < m_models.size(); i++) {
-		int offset = i * 4;
-		models_indices.push_back(0 + offset);
-		models_indices.push_back(1 + offset);
-		models_indices.push_back(2 + offset);
-		models_indices.push_back(2 + offset);
-		models_indices.push_back(3 + offset);
-		models_indices.push_back(0 + offset);
-	}
-
+void Scene::Init() {	
 	modelsVA.Bind();
 	modelsVB.Create(models_vertices.data(), models_vertices.size());
 	modelsLayout.Push<float>(2);
