@@ -10,3 +10,8 @@ Plan of action to make program more secure, expandable and readable:
 - Implement multithreading for collission detection.
 - Add a way to add collide boxes to objects.
 - Critically look at the abstractions made in the code and see if they can be improved.
+
+[09/02/2024]
+Todo:
+- Fix the bug where models disappear if Init is called before add model
+- Add a way to add models where the mouse is clicked
