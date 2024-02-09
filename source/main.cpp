@@ -41,14 +41,14 @@ int Main::Init() {
 	ImGui_ImplOpenGL3_Init(glsl_version);	
 
 	//------- Object creation -------//
-	
 	Shader shader;
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	Scene scene;
+	
 	scene.AddModel(0.5f, 0.5f, 0.7f, 0.1f);
 	scene.AddModel(0.5f, 0.5f, -0.7f, -0.1f);
-	scene.InitObjects();
-
+	scene.AddModel(0.5f, 0.5f, 0.0f, 0.0f);
+	scene.Init();
 
 	float time = 0;
 	float pastTime = 0;
@@ -91,7 +91,7 @@ int Main::Init() {
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-
+		
 		glfwSwapBuffers(window);
 		
 	}
@@ -101,6 +101,13 @@ int Main::Init() {
 void Main::Input(GLFWwindow* window, ImGuiIO& io) {
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 		glfwSetWindowShouldClose(window, true);
+	}
+	if (ImGui::IsMouseClicked(0)) {
+		double x, y;
+		glfwGetCursorPos(window, &x, &y);
+		x = (x-400) / 400;
+		y = (y - 400) / 400;
+		
 	}
 }
 
