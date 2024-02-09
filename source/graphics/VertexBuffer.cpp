@@ -23,6 +23,7 @@ void VertexBuffer::Unbind() const{
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void VertexBuffer::Update(unsigned int offset, unsigned int size, const void* data) {
-	glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+void VertexBuffer::Update(const void* data, unsigned int size) {
+	Bind();
+	glBufferData(GL_ARRAY_BUFFER, size * sizeof(GLfloat), data, GL_STATIC_DRAW);
 }
