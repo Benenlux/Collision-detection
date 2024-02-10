@@ -29,11 +29,10 @@ void Scene::AddModel(float height, float width, float x_coord, float y_coord) {
 		models_indices.push_back(3 + offset);
 		models_indices.push_back(0 + offset);
 	}
-	/*
-	modelsVA.Bind();
+	
 	modelsVB.Update(models_vertices.data(), models_vertices.size());
 	modelsIB.Update(models_indices.data(), models_indices.size());
-	*/
+
 }
 
 void Scene::RenderObjects() {

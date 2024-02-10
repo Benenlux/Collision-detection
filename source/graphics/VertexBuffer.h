@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <iostream>
 
 //TODO: Add a function to add vertices to the vertex buffer and update certain vertices
 class VertexBuffer {

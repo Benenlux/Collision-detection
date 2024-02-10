@@ -45,10 +45,11 @@ int Main::Init() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	Scene scene;
 	
+	scene.Init();
 	scene.AddModel(0.5f, 0.5f, 0.7f, 0.1f);
 	scene.AddModel(0.5f, 0.5f, -0.7f, -0.1f);
 	scene.AddModel(0.5f, 0.5f, 0.0f, 0.0f);
-	scene.Init();
+	
 
 	float time = 0;
 	float pastTime = 0;
@@ -71,6 +72,14 @@ int Main::Init() {
 		}
 		
 		Input(window, io);
+
+		if (ImGui::IsMouseClicked(0)) {
+			double x, y;
+			glfwGetCursorPos(window, &x, &y);
+			x = (x - 400) / 400;
+			y = (y - 370) / 400;
+			scene.AddModel(0.1f, 0.1f, x, -y);
+		}
 
 		ImGui::Render();
 
@@ -107,7 +116,7 @@ void Main::Input(GLFWwindow* window, ImGuiIO& io) {
 		glfwGetCursorPos(window, &x, &y);
 		x = (x-400) / 400;
 		y = (y - 400) / 400;
-		
+		//scene.AddModel(0.1f, 0.1f, x, y);
 	}
 }
 
