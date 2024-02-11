@@ -23,6 +23,13 @@ Done:
 
 [11/02/2024]
 Done:
+- Added a way to pause the simulation
 - Added a way to add models where the mouse is clicked
 - Fixed a bug where it would misplace the models if the window was resized
-- Added a way to pause the simulation
+- Fixed a bug where a click was registered on the main window if a child window was clicked
+- Fixed basic collission with the ground
+
+Todo:
+- Add a Collider and Translate clas to the engine
+- Revamp the code to make use of pointers more and check the performance impact of that
+- Add collission detection between models
