@@ -7,10 +7,11 @@
 #include "graphics/VertexBufferLayout.h"
 #include "graphics/IndexBuffer.h"
 #include "graphics/shader.h"
+#include <thread>
 
 class Scene : private Model {
 private: 
-	std::vector<Model> m_models;
+	
 	std::vector<Model> m_terrain;
 
 	std::vector<float> models_vertices;
@@ -31,12 +32,13 @@ private:
 
 	unsigned sceneShader;
 	float deltaTime = 0.0f;
-
+	std::thread thread1;
+	std::thread thread2;
 	
 	
 public:
 	bool isPaused = false;
-
+	std::vector<Model> m_models;
 	Scene();
 	~Scene();
 	void Init();
@@ -44,8 +46,11 @@ public:
 
 	//Update functions
 	void UpdateObjects();
+	void CheckCollisions(int offset);
 	void Pause();
 	void Play();
+
+	void StressTest(float fps);
 
 	//Render functions
 	void RenderAll(float time);

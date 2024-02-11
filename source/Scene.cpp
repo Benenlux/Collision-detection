@@ -50,9 +50,18 @@ void Scene::Init() {
 	modelsLayout.Push<float>(2);
 	modelsVA.AddBuffer(modelsVB, modelsLayout);
 	modelsIB.Create(models_indices.data(), models_indices.size());
+	
 }
 
 void Scene::UpdateObjects() {
+	
+	if (m_models.size() > 10000) {
+		thread1 = std::thread(&Scene::CheckCollisions, this, 10000);
+		thread2 = std::thread(&Scene::CheckCollisions, this, 0);
+	}else{
+		CheckCollisions(0);
+	}
+	
 	for (int i = 0; i < m_models.size(); i++) {
 		m_models[i].Update(deltaTime);
 	}
@@ -63,7 +72,11 @@ void Scene::UpdateObjects() {
 			
 		}
 	}
-
+	if (m_models.size() > 10000) {
+		thread1.join();
+		thread2.join();
+	}
+	
 	modelsVB.Bind();
 	glBufferSubData(GL_ARRAY_BUFFER, 0, models_vertices.size() * sizeof(GLfloat), models_vertices.data());
 }
@@ -84,4 +97,20 @@ void Scene::RenderAll(float time){
 
 void Scene::RenderTerrain() {
 
+}
+
+void Scene::CheckCollisions(int offset) {
+	
+	for (int i = offset; i < m_models.size(); i++) {
+		if (m_models[i].bottom_right.y < -1.0f) {
+			float difference = m_models[i].bottom_right.y - -1.0f;
+			m_models[i].Transform(glm::vec2(0.0f, -difference));
+		}
+	}
+}
+
+void Scene::StressTest(float fps) {
+	if (fps > 200) {
+		AddModel(0.1f, 0.1f, 0.0f, 0.0f);
+	}
 }
