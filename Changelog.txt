@@ -15,3 +15,14 @@ Plan of action to make program more secure, expandable and readable:
 Todo:
 - Fix the bug where models disappear if Init is called before add model
 - Add a way to add models where the mouse is clicked
+
+[10/02/2024]
+Done:
+- Fixed the bug where models disappear if Init is called before add model
+- Implemented a way to add models after the buffers were created
+
+[11/02/2024]
+Done:
+- Added a way to add models where the mouse is clicked
+- Fixed a bug where it would misplace the models if the window was resized
+- Added a way to pause the simulation
