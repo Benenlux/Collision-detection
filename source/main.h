@@ -28,8 +28,13 @@ public:
 private:
 	int window_width = 800;
 	int window_height = 600;
+
+	float model_width = 0.1f;
+	float model_height = 0.1f;
+
+	float time_scale = 1.0f;
 	
-	void Main::Input(GLFWwindow* window, ImGuiIO& io, Scene* scene);
+	void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene);
 	int Main::Exit();
 	
 };
