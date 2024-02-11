@@ -3,6 +3,7 @@
 Scene::Scene() {
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	sceneShader = shader.m_shaderProgram;
+	Init();
 }
 
 Scene::~Scene() {
@@ -36,7 +37,9 @@ void Scene::AddModel(float height, float width, float x_coord, float y_coord) {
 }
 
 void Scene::RenderObjects() {
-	UpdateObjects();
+	if (!isPaused) {
+		UpdateObjects();
+	}
 	modelsVA.Bind();
 	glDrawElements(GL_TRIANGLES, models_indices.size(), GL_UNSIGNED_INT, nullptr);
 }
@@ -65,8 +68,17 @@ void Scene::UpdateObjects() {
 	glBufferSubData(GL_ARRAY_BUFFER, 0, models_vertices.size() * sizeof(GLfloat), models_vertices.data());
 }
 
+void Scene::Pause(){
+	isPaused = true;
+}
+
+void Scene::Play(){
+	isPaused = false;
+}
+
 void Scene::RenderAll(float time){
 	deltaTime = time;
+	glUseProgram(sceneShader);
 	RenderObjects();
 }
 

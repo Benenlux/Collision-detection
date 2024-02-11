@@ -44,12 +44,7 @@ int Main::Init() {
 	Shader shader;
 	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
 	Scene scene;
-	
-	scene.Init();
-	scene.AddModel(0.5f, 0.5f, 0.7f, 0.1f);
-	scene.AddModel(0.5f, 0.5f, -0.7f, -0.1f);
-	scene.AddModel(0.5f, 0.5f, 0.0f, 0.0f);
-	
+
 
 	float time = 0;
 	float pastTime = 0;
@@ -67,36 +62,31 @@ int Main::Init() {
 			
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0+io.MousePos.x/(io.DisplaySize.x/2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
-			ImGui::End();
+			ImGui::Text("FPS: %.1f", 1/io.DeltaTime);
+			
+			if (scene.isPaused){
+				if (ImGui::Button("Resume")) {
+					scene.Play();
+				}
+			}
+			else {
+				if (ImGui::Button("Pause")) {
+					scene.Pause();
+				}
+			}
 
+			ImGui::End();
 		}
 		
-		Input(window, io);
-
-		if (ImGui::IsMouseClicked(0)) {
-			double x, y;
-			glfwGetCursorPos(window, &x, &y);
-			x = (x - 400) / 400;
-			y = (y - 370) / 400;
-			scene.AddModel(0.1f, 0.1f, x, -y);
-		}
+		Input(window, io, &scene);
 
 		ImGui::Render();
-
 		
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		
-
-		glUseProgram(shader.m_shaderProgram);
-
-		float timeSinceStart = glfwGetTime();
-		float deltaTime = timeSinceStart - pastTime;
-		pastTime = timeSinceStart;
-	
-		scene.RenderAll(deltaTime);
+		scene.RenderAll(io.DeltaTime);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -107,16 +97,24 @@ int Main::Init() {
 	Main::Exit();
 }
 
-void Main::Input(GLFWwindow* window, ImGuiIO& io) {
+void Main::Input(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 		glfwSetWindowShouldClose(window, true);
 	}
 	if (ImGui::IsMouseClicked(0)) {
 		double x, y;
 		glfwGetCursorPos(window, &x, &y);
-		x = (x-400) / 400;
-		y = (y - 400) / 400;
-		//scene.AddModel(0.1f, 0.1f, x, y);
+		x = (x-(io.DisplaySize.x/2)) / (io.DisplaySize.x/2);
+		y = (y-(io.DisplaySize.y/2)) / (io.DisplaySize.y/2);
+		scene->AddModel(0.1f, 0.1f, x, -y);
+	}
+	if (ImGui::IsKeyPressed(ImGuiKey_Space)) {
+		if (scene->isPaused) {
+			scene->Play();
+		}
+		else {
+			scene->Pause();
+		}
 	}
 }
 

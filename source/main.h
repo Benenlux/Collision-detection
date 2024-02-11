@@ -29,7 +29,7 @@ private:
 	int window_width = 800;
 	int window_height = 600;
 	
-	void Main::Input(GLFWwindow* window, ImGuiIO& io);
+	void Main::Input(GLFWwindow* window, ImGuiIO& io, Scene* scene);
 	int Main::Exit();
 	
 };

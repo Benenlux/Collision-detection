@@ -10,22 +10,16 @@
 
 class Scene : private Model {
 private: 
-	//To handle collission, we need to store the models in a vector so we can loop through them 
-	//Check for their coordinates, and then check if they are colliding
-	//I can do this through the translation vector, which is stored in the model class
-	//Models and terrain is stored in seperate vectors, because collission behavior is different for both
 	std::vector<Model> m_models;
 	std::vector<Model> m_terrain;
 
-	
+	std::vector<float> models_vertices;
+	std::vector<unsigned int> models_indices;
+
 	VertexBufferLayout terrainLayout;
 	VertexBuffer terrainVB;
 	VertexArray terrainVA;
 	IndexBuffer terrainIB;
-
-
-	//TODO: Add a function to add models to the scene, and parse them correctly to the buffers 
-	//Model buffers will be dynamic, so the vertices can be directly updated through the Model class. 
 
 	VertexBufferLayout modelsLayout;
 	
@@ -35,23 +29,26 @@ private:
 
 	Shader shader;
 
+	unsigned sceneShader;
 	float deltaTime = 0.0f;
 
+	
+	
 public:
-	unsigned sceneShader;
-	std::vector<float> models_vertices;
-	std::vector<unsigned int> models_indices;
+	bool isPaused = false;
 
 	Scene();
 	~Scene();
+	void Init();
 	void AddModel(float height, float width, float x_coord, float y_coord);
 
-	void Init();
+	//Update functions
 	void UpdateObjects();
+	void Pause();
+	void Play();
 
+	//Render functions
 	void RenderAll(float time);
-	//Iterates through the models list, checks for collissions and calls the render function for each model
-	//If there is a collission, call the collission function from the rigidbody class
 	void RenderObjects();
 	void RenderTerrain();
 };
