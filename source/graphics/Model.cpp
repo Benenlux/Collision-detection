@@ -20,15 +20,28 @@ void Model::CreateCube(float height, float width, float x_coordinate, float y_co
 	translate = glm::vec2(0.0f, 0.0f);
 }
 
+void Model::Transform(glm::vec2 transformation) {
+	top_left.x = top_left.x + transformation.x;
+	top_left.y = top_left.y + transformation.y;
+	bottom_left.x = bottom_left.x + transformation.x;
+	bottom_left.y = bottom_left.y + transformation.y;
+	bottom_right.x = bottom_right.x + transformation.x;
+	bottom_right.y = bottom_right.y + transformation.y;
+	top_right.x = top_right.x + transformation.x;
+	top_right.y = top_right.y + transformation.y;
+}
+
 void Model::Update(float deltaTime) {
 	if (has_physics) {
-		translate = translate + RigidBody::Update(deltaTime);
+		translate = RigidBody::Update(deltaTime);
 	}
+	
+	Transform(translate);
 	m_vertices = {
-		top_left.x + translate.x, top_left.y + translate.y,
-		bottom_left.x + translate.x, bottom_left.y + translate.y,
-		bottom_right.x + translate.x, bottom_right.y + translate.y,
-		top_right.x + translate.x, top_right.y + translate.y
+		top_left.x, top_left.y,
+		bottom_left.x, bottom_left.y,
+		bottom_right.x, bottom_right.y,
+		top_right.x, top_right.y
 	};
-
+	
 }
