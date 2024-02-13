@@ -33,3 +33,8 @@ Todo:
 - Add a Collider and Translate clas to the engine
 - Revamp the code to make use of pointers more and check the performance impact of that
 - Add collission detection between models
+
+[13/02/2024]
+Done:
+- Added the ability to add circles
+- Started working on the collider class
