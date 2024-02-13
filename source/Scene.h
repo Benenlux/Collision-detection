@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "graphics/Model.h"
+#include "graphics/Object.h"
 #include "graphics/VertexArray.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/VertexBufferLayout.h"
@@ -9,44 +9,37 @@
 #include "graphics/shader.h"
 #include <thread>
 
-class Scene : private Model {
+class Scene : private Object {
 private: 
+
+	std::vector<float> objects_vertices;
+	std::vector<unsigned int> objects_indices;
+
+	VertexBufferLayout objects_layout;
 	
-	std::vector<Model> m_terrain;
-
-	std::vector<float> models_vertices;
-	std::vector<unsigned int> models_indices;
-
-	VertexBufferLayout terrainLayout;
-	VertexBuffer terrainVB;
-	VertexArray terrainVA;
-	IndexBuffer terrainIB;
-
-	VertexBufferLayout modelsLayout;
-	
-	VertexBuffer modelsVB;
-	VertexArray modelsVA;
-	IndexBuffer modelsIB;
+	VertexBuffer objectsVB;
+	VertexArray objectsVA;
+	IndexBuffer objectsIB;
 
 	Shader shader;
 
 	unsigned sceneShader;
 	float deltaTime = 0.0f;
-	std::thread thread1;
-	std::thread thread2;
 	
 	
 public:
 	bool isPaused = false;
-	std::vector<Model> m_models;
+	std::vector<std::shared_ptr<Object>> objects;
 	Scene();
 	~Scene();
 	void Init();
-	void AddModel(float height, float width, float x_coord, float y_coord);
+	void AddObject(float height, float width, float x_coord, float y_coord);
+
+	void AddCircle(float radius, float x_coord, float y_coord);
 
 	//Update functions
 	void UpdateObjects();
-	void CheckCollisions(int offset);
+	void CheckCollisions();
 	void Pause();
 	void Play();
 
@@ -55,5 +48,4 @@ public:
 	//Render functions
 	void RenderAll(float time);
 	void RenderObjects();
-	void RenderTerrain();
 };
