@@ -40,10 +40,10 @@ int Main::Init() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);      
 	ImGui_ImplOpenGL3_Init(glsl_version);	
 
-	//------- Object creation -------//
-	Shader shader;
-	shader.Create(RESOURCE_DIR "/VertexShader.glsl", RESOURCE_DIR "/FragmentShader.glsl");
+	
 	Scene scene;
+	scene.AddCircle(0.01f, 0.0f, 0.0f);
+	scene.AddCircle(0.01f, 0.5f, 0.0f);
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -56,21 +56,21 @@ int Main::Init() {
 
 		ImGui::Render();
 		
-		
 
 		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		scene.StressTest(1 / io.DeltaTime);
+		
 		scene.RenderAll(io.DeltaTime*time_scale);
+		//scene.StressTest(1 / io.DeltaTime);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
 		
 		glfwSwapBuffers(window);
 		
 	}
+	
 	Main::Exit();
 }
 
@@ -81,7 +81,7 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoNavFocus );
 	ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + io.MousePos.x / (io.DisplaySize.x / 2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
 	ImGui::Text("FPS: %.1f", 1 / io.DeltaTime);
-	ImGui::Text("Models: %d", scene->m_models.size());
+	ImGui::Text("Models: %d", scene->objects.size());
 	if (scene->isPaused) {
 		if (ImGui::Button("Resume")) {
 			scene->Play();
@@ -92,8 +92,8 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 			scene->Pause();
 		}
 	}
-	ImGui::SliderFloat("Width", &model_width, 0.1f, 0.5f);
-	ImGui::SliderFloat("Height", &model_height, 0.01f, 0.5f);
+	ImGui::SliderFloat("Width", &model_width, 0.001f, 0.5f);
+	ImGui::SliderFloat("Height", &model_height, 0.001f, 0.5f);
 	ImGui::SliderFloat("Time Scale", &time_scale, 0.1f, 2.0f);
 	ImGui::End();
 	
@@ -107,7 +107,7 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 			glfwGetCursorPos(window, &x, &y);
 			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x / 2);
 			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
-			scene->AddModel(model_height, model_width, x, -y);
+			//scene->AddObject(model_height, model_width, x, -y);
 		}
 	}
 	
