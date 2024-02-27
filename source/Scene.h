@@ -7,9 +7,11 @@
 #include "graphics/VertexBufferLayout.h"
 #include "graphics/IndexBuffer.h"
 #include "graphics/shader.h"
+#include "physics/Colliders.h"
 #include <thread>
 
-class Scene : private Object {
+
+class Scene : Collider {
 private: 
 
 	std::vector<float> objects_vertices;
@@ -21,31 +23,34 @@ private:
 	VertexArray objectsVA;
 	IndexBuffer objectsIB;
 
-	Shader shader;
+	
 
 	unsigned sceneShader;
 	float deltaTime = 0.0f;
 	
 	
 public:
+	Shader shader;
+	int index_offset = 0;
 	bool isPaused = false;
-	std::vector<std::shared_ptr<Object>> objects;
+
+	std::vector<Object> objects;
+
 	Scene();
 	~Scene();
 	void Init();
-	void AddObject(float height, float width, float x_coord, float y_coord);
-
-	void AddCircle(float radius, float x_coord, float y_coord);
+	void AddSquare(float height, float width, float x_coord, float y_coord);
+	void AddCircle(float radius, float x_coord, float y_coord, int segments);
 
 	//Update functions
 	void UpdateObjects();
-	void CheckCollisions();
+	void CheckCollision(Object* object1, Object* object2);
 	void Pause();
 	void Play();
 
 	void StressTest(float fps);
 
 	//Render functions
-	void RenderAll(float time);
+	void Render(float time);
 	void RenderObjects();
 };
