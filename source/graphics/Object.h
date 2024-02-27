@@ -6,32 +6,21 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "../physics/Rigidbody.h"
-#include "../physics/Transform.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-
-enum class Shape {
-	SQUARE,
-	CIRCLE
-};
 
 class Object : public RigidBody{
 public:
 
 	bool isOnGround = false;
-	float height;
-	float width;
 	float radius;
 
-	Shape shape;
 	std::vector<float> m_vertices;
 	
+	glm::vec2 position = glm::vec2(0.0f, 0.0f);
 
-	Transform transform;
-
-	void CreateSquare(float height, float width, float x_coordinate, float y_coordinate);
+	void Translate(float x, float y);
 	void CreateCircle(float radius, float x_coord, float y_coord, int segments);
 private: 
 	
