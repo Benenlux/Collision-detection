@@ -26,15 +26,25 @@ public:
 	int Main::Init();
 
 private:
-	int window_width = 800;
-	int window_height = 600;
+	int window_height = 900;
+	int window_width = window_height * 1.78;
+	
 
 	float model_width = 0.1f;
 	float model_height = 0.1f;
+	float model_radius = 0.1f;
+	int model_segments = 16;
+
+	enum class SpawnType {
+		Square,
+		Circle,
+	};
+
+	SpawnType spawn_type = SpawnType::Square;
 
 	float time_scale = 1.0f;
 	
-	void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene);
+	void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float ratio);
 	int Main::Exit();
 	
 };

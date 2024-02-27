@@ -14,7 +14,9 @@ int Main::Init() {
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); 
 	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "OpenGL", NULL, NULL);
+	
 
 	const char* glsl_version = "#version 130";
 
@@ -42,8 +44,6 @@ int Main::Init() {
 
 	
 	Scene scene;
-	scene.AddCircle(0.01f, 0.0f, 0.0f);
-	scene.AddCircle(0.01f, 0.5f, 0.0f);
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -52,18 +52,21 @@ int Main::Init() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 
-		ImGuiRender(window, io, &scene);
+		float ratio = io.DisplaySize.x / io.DisplaySize.y;
+
+		ImGuiRender(window, io, &scene, ratio);
 
 		ImGui::Render();
-		
 
-		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+		glViewport(0, 0, window_width, window_height);
+		
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		
-		scene.RenderAll(io.DeltaTime*time_scale);
-		//scene.StressTest(1 / io.DeltaTime);
+
+		scene.Render(io.DeltaTime*time_scale);
+		scene.shader.BindUniform1f("ratio", ratio);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
@@ -74,12 +77,12 @@ int Main::Init() {
 	Main::Exit();
 }
 
-void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
+void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float ratio) {
 	
 	ImGui::NewFrame();
 
 	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoNavFocus );
-	ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + io.MousePos.x / (io.DisplaySize.x / 2), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
+	ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + (io.MousePos.x / (window_width / 2)), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
 	ImGui::Text("FPS: %.1f", 1 / io.DeltaTime);
 	ImGui::Text("Models: %d", scene->objects.size());
 	if (scene->isPaused) {
@@ -92,8 +95,27 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 			scene->Pause();
 		}
 	}
-	ImGui::SliderFloat("Width", &model_width, 0.001f, 0.5f);
-	ImGui::SliderFloat("Height", &model_height, 0.001f, 0.5f);
+
+	if (spawn_type == SpawnType::Circle) {
+		if (ImGui::Button("Cirlce")) {
+			spawn_type = SpawnType::Square;
+		}
+	}
+	else if (spawn_type == SpawnType::Square) {
+		if (ImGui::Button("Square")) {
+			spawn_type = SpawnType::Circle;
+		}
+	}
+
+	if (spawn_type == SpawnType::Square) {
+		ImGui::SliderFloat("Width", &model_width, 0.001f, 0.5f);
+		ImGui::SliderFloat("Height", &model_height, 0.001f, 0.5f);
+	}
+	else if (spawn_type == SpawnType::Circle) {
+		ImGui::SliderFloat("Radius", &model_radius, 0.001f, 0.5f);
+		ImGui::SliderInt("Segments", &model_segments, 8, 100);
+	}
+	
 	ImGui::SliderFloat("Time Scale", &time_scale, 0.1f, 2.0f);
 	ImGui::End();
 	
@@ -105,9 +127,14 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene) {
 		if (ImGui::IsMouseClicked(0)) {
 			double x, y;
 			glfwGetCursorPos(window, &x, &y);
-			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x / 2);
+			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x/ 2);
 			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
-			//scene->AddObject(model_height, model_width, x, -y);
+			if (spawn_type == SpawnType::Circle)
+				scene->AddCircle(model_radius, x*ratio, -y, model_segments);
+			else if (spawn_type == SpawnType::Square) {
+				scene->AddSquare(model_height, model_width, x*ratio, -y);
+			}
+			
 		}
 	}
 	
