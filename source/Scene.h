@@ -39,16 +39,12 @@ public:
 	Scene();
 	~Scene();
 	void Init();
-	void AddSquare(float height, float width, float x_coord, float y_coord);
 	void AddCircle(float radius, float x_coord, float y_coord, int segments);
 
 	//Update functions
 	void UpdateObjects();
-	void CheckCollision(Object* object1, Object* object2);
 	void Pause();
 	void Play();
-
-	void StressTest(float fps);
 
 	//Render functions
 	void Render(float time);

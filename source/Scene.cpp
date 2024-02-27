@@ -20,26 +20,6 @@ void Scene::Init() {
 	objectsIB.Create(objects_indices.data(), objects_indices.size());
 }
 
-void Scene::AddSquare(float height, float width, float x_coord, float y_coord) {
-	Object object;
-	object.CreateSquare(height, width, x_coord, y_coord);
-	objects.push_back(object);
-	for (int i = 0; i < object.m_vertices.size(); i++) {
-		objects_vertices.push_back(object.m_vertices[i]);
-	}
-	
-	objects_indices.push_back(0 + index_offset);
-	objects_indices.push_back(1 + index_offset);
-	objects_indices.push_back(2 + index_offset);
-	objects_indices.push_back(2 + index_offset);
-	objects_indices.push_back(3 + index_offset);
-	objects_indices.push_back(0 + index_offset);
-	index_offset += 4;
-	
-	objectsVB.Update(objects_vertices.data(), objects_vertices.size());
-	objectsIB.Update(objects_indices.data(), objects_indices.size());
-}
-
 void Scene::AddCircle(float radius, float x_coord, float y_coord, int segments) {
 	Object object;
 	object.CreateCircle(radius, x_coord, y_coord, segments);
@@ -85,8 +65,8 @@ void Scene::RenderObjects() {
 		//Go through all the vertices in the object
 		for (int j = 0; j < objects[i].m_vertices.size(); j += 2) {
 			//Apply the translations in world space to the vertices of the object
-			objects_vertices.push_back(objects[i].m_vertices[j] + objects[i].transform.position.x);
-			objects_vertices.push_back(objects[i].m_vertices[j+1] + objects[i].transform.position.y);
+			objects_vertices.push_back(objects[i].m_vertices[j] + objects[i].position.x);
+			objects_vertices.push_back(objects[i].m_vertices[j+1] + objects[i].position.y);
 		}
 	}
 	objectsVB.Bind();
@@ -99,7 +79,7 @@ void Scene::UpdateObjects() {
 	for (int i = 0; i < objects.size(); i++) {
 		//Check for collisions if there's more than one object
 		if (objects[i].isOnGround == false) {
-			objects[i].transform.Translate(0.0f, -0.5f*deltaTime);
+			objects[i].Translate(0.0f, -0.5f*deltaTime);
 			CheckIfGrounded(&objects[i]);
 		}
 		
@@ -112,26 +92,7 @@ void Scene::UpdateObjects() {
 				}
 			}
 		}
-		
 	}
-}
-
-void Scene::CheckCollision(Object* object1, Object* object2) {
-	if (object1->shape == Shape::SQUARE && object2->shape == Shape::SQUARE) {
-		CheckCollisionSquaretoSquare(object1, object2);
-	}
-	else if (object1->shape == Shape::CIRCLE && object2->shape == Shape::CIRCLE) {
-		if (CheckCollisionCircletoCircle(object1, object2)) {
-			ResolveCollisionCircleToCircle(object1, object2);
-		}
-	}
-	else if ((object1->shape == Shape::SQUARE && object2->shape == Shape::CIRCLE) || (object1->shape == Shape::CIRCLE && object2->shape == Shape::SQUARE)) {
-		CheckCollisionSquareToCircle(object1, object2);
-	}
-	else {
-		std::cout << "Error: Shape not recognized" << std::endl;
-	}
-
 }
 
 void Scene::Pause(){
@@ -140,11 +101,5 @@ void Scene::Pause(){
 
 void Scene::Play(){
 	isPaused = false;
-}
-
-void Scene::StressTest(float fps) {
-	if (fps > 200) {
-		AddSquare(0.1f, 0.1f, 0.0f, 0.0f);
-	}
 }
 

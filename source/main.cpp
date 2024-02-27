@@ -95,26 +95,8 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 			scene->Pause();
 		}
 	}
-
-	if (spawn_type == SpawnType::Circle) {
-		if (ImGui::Button("Cirlce")) {
-			spawn_type = SpawnType::Square;
-		}
-	}
-	else if (spawn_type == SpawnType::Square) {
-		if (ImGui::Button("Square")) {
-			spawn_type = SpawnType::Circle;
-		}
-	}
-
-	if (spawn_type == SpawnType::Square) {
-		ImGui::SliderFloat("Width", &model_width, 0.001f, 0.5f);
-		ImGui::SliderFloat("Height", &model_height, 0.001f, 0.5f);
-	}
-	else if (spawn_type == SpawnType::Circle) {
-		ImGui::SliderFloat("Radius", &model_radius, 0.001f, 0.5f);
-		ImGui::SliderInt("Segments", &model_segments, 8, 100);
-	}
+	ImGui::SliderFloat("Radius", &model_radius, 0.001f, 0.5f);
+	ImGui::SliderInt("Segments", &model_segments, 8, 100);
 	
 	ImGui::SliderFloat("Time Scale", &time_scale, 0.1f, 2.0f);
 	ImGui::End();
@@ -129,12 +111,7 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 			glfwGetCursorPos(window, &x, &y);
 			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x/ 2);
 			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
-			if (spawn_type == SpawnType::Circle)
-				scene->AddCircle(model_radius, x*ratio, -y, model_segments);
-			else if (spawn_type == SpawnType::Square) {
-				scene->AddSquare(model_height, model_width, x*ratio, -y);
-			}
-			
+			scene->AddCircle(model_radius, x*ratio, -y, model_segments);	
 		}
 	}
 	
