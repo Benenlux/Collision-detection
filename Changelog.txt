@@ -38,3 +38,14 @@ Todo:
 Done:
 - Added the ability to add circles
 - Started working on the collider class
+
+[27/02/2024]
+Done:
+- Added collision detection between circles
+- Added a way to check if a circle is touching the ground
+- Removed the ability to add squares for the purpose performance and simplicity
+- Removed the Transform class and moved it into the object class
+
+Todo:
+- Optimize the collision detection throught the use of threads
+- Divide the objects into grids to optimize the collision detection
