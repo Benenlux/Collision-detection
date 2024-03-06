@@ -21,10 +21,14 @@ public:
 
 	void Create(const std::string& vertexPath, const std::string& fragmentPath);
 	
-	void BindUniform3f(std::string uniformName, glm::vec3 data);
+	//Functions to bind uniforms
 	void BindMat4(std::string uniformName, glm::mat4 data);
+	void BindUniform4f(std::string uniformName, glm::vec4 data);
+	void BindUniform3f(std::string uniformName, glm::vec3 data);
 	void BindUniform2f(std::string uniformName, glm::vec2 data);
 	void BindUniform1f(std::string uniformName, float data);
+
+
 	void AttachFragment();
 	void AttachVertex();
 	void LinkProgram();

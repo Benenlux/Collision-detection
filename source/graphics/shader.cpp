@@ -68,6 +68,11 @@ unsigned int Shader::CreateFragShader(const std::string& path) {
 	return fragmentShader;
 }  
 
+void Shader::BindUniform4f(std::string uniformName, glm::vec4 data) {
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniform4f(uniformLocation, data.x, data.y, data.z, data.w);
+}
+
 void Shader::BindUniform3f(std::string uniformName, glm::vec3 data) {
 	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
 	glUniform3f(uniformLocation, data.x, data.y, data.z);
