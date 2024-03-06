@@ -6,14 +6,11 @@
 #include "graphics/VertexBuffer.h"
 #include "graphics/VertexBufferLayout.h"
 #include "graphics/IndexBuffer.h"
-#include "graphics/shader.h"
+#include "graphics/Shader.h"
 #include "physics/Colliders.h"
-#include <thread>
-
 
 class Scene : Collider {
 private: 
-
 	std::vector<float> objects_vertices;
 	std::vector<unsigned int> objects_indices;
 
@@ -23,30 +20,29 @@ private:
 	VertexArray objectsVA;
 	IndexBuffer objectsIB;
 
-	
-
-	unsigned sceneShader;
-	float deltaTime = 0.0f;
+	unsigned scene_shader;
+	float delta_time = 0.0f;
+	int index_offset = 0;
 	
 	
 public:
 	Shader shader;
-	int index_offset = 0;
-	bool isPaused = false;
-
-	std::vector<Object> objects;
+	
+	bool is_paused = false;
+	std::vector<Object> scene_objects;
 
 	Scene();
 	~Scene();
-	void Init();
 	void AddCircle(float radius, float x_coord, float y_coord, int segments);
 
 	//Update functions
-	void UpdateObjects();
+	void UpdateObject(Object* object, int object_number);
+
+	//Misc functions
 	void Pause();
 	void Play();
 
 	//Render functions
-	void Render(float time);
+	void Render();
 	void RenderObjects();
 };
