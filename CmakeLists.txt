@@ -13,10 +13,10 @@ find_package(glm CONFIG REQUIRED)
 
 set(graphics "${CMAKE_CURRENT_SOURCE_DIR}/source/graphics")
 set(physics "${CMAKE_CURRENT_SOURCE_DIR}/source/physics")
-set(SOURCES source/main.cpp ${graphics}/IndexBuffer.cpp ${graphics}/shader.cpp ${graphics}/VertexArray.cpp ${graphics}/VertexBuffer.cpp "source/graphics/Object.cpp" "source/physics/RigidBody.cpp" "source/Scene.cpp"  "source/physics/Colliders.cpp")
-set(HEADERS source/main.h ${graphics}/IndexBuffer.h ${graphics}/shader.h ${graphics}/VertexArray.h ${graphics}/VertexBuffer.h ${graphics}/VertexBufferLayout.h "source/graphics/Object.h" ${physics}/RigidBody.h "source/Scene.h" "source/physics/Colliders.h")
+set(SOURCES source/main.cpp ${graphics}/IndexBuffer.cpp ${graphics}/Shader.cpp ${graphics}/VertexArray.cpp ${graphics}/VertexBuffer.cpp ${graphics}/Object.cpp "source/Scene.cpp"  ${physics}/Colliders.cpp )
+set(HEADERS source/main.h ${graphics}/IndexBuffer.h ${graphics}/Shader.h ${graphics}/VertexArray.h ${graphics}/VertexBuffer.h ${graphics}/VertexBufferLayout.h ${graphics}/Object.h "source/Scene.h" ${physics}/Colliders.h)
 
-add_executable(App  ${SOURCES} ${HEADERS} "source/physics/RigidBody.cpp")
+add_executable(App  ${SOURCES} ${HEADERS} )
 
 target_link_libraries(App PRIVATE glad::glad imgui::imgui glfw glm::glm)
 
