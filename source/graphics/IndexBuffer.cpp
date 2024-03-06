@@ -23,7 +23,7 @@ void IndexBuffer::Unbind() const{
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 }
 
-void IndexBuffer::Update(const unsigned int* data, unsigned int count) {
+void IndexBuffer::UpdateSize(const unsigned int* data, unsigned int count) {
 	Bind();
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW);
 }
