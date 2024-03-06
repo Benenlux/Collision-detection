@@ -1,20 +1,16 @@
 #pragma once
 
 #include <vector>
-#include <optional>
-
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "../physics/Rigidbody.h"
-
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
-class Object : public RigidBody{
+class Object{
 public:
 
-	bool isOnGround = false;
+	bool is_on_ground = false;
+	bool is_on_end = false;
 	float radius;
+
+	int m_segments;
 
 	std::vector<float> m_vertices;
 	
@@ -22,7 +18,4 @@ public:
 
 	void Translate(float x, float y);
 	void CreateCircle(float radius, float x_coord, float y_coord, int segments);
-private: 
-	
-	glm::vec2 middle_point;
 };
