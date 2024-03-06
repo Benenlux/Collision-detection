@@ -46,6 +46,9 @@ Done:
 - Removed the ability to add squares for the purpose performance and simplicity
 - Removed the Transform class and moved it into the object class
 
-Todo:
-- Optimize the collision detection throught the use of threads
-- Divide the objects into grids to optimize the collision detection
+
+[06/03/2024]
+Done:
+- Added optimisations in regards to how objects are updated
+- Added comments where necessary
+- Cleaned up some unused or unecessary code
