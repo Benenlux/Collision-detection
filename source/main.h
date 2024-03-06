@@ -2,7 +2,6 @@
 
 //Standard libraries
 #include <iostream>
-#include <fstream>
 #include <string>
 
 //Graphics libraries
@@ -14,8 +13,6 @@
 
 //Math libraries
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 //Custom libraries
 #include "Scene.h"
@@ -29,20 +26,12 @@ private:
 	int window_height = 900;
 	int window_width = window_height * 1.78;
 	
-
-	float model_width = 0.1f;
-	float model_height = 0.1f;
 	float model_radius = 0.1f;
 	int model_segments = 16;
 
-	enum class SpawnType {
-		Square,
-		Circle,
-	};
+	ImVec4 model_colors = ImVec4(1.0f, 0.5f, 0.2f, 1.0f);
+	ImVec4 background_color = ImVec4(0.2f, 0.3f, 0.3f, 1.0f);
 
-	SpawnType spawn_type = SpawnType::Square;
-
-	float time_scale = 1.0f;
 	
 	void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float ratio);
 	int Main::Exit();

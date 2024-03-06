@@ -6,6 +6,8 @@ int main() {
 }
 
 int Main::Init() {
+
+	//------- GLFW setup -------//
 	if (!glfwInit()) {
 		std::cout << "Failed to initialize GLFW" << std::endl;
 		return -1;
@@ -36,14 +38,12 @@ int Main::Init() {
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	io.DisplaySize.x = window_width;
-	io.DisplaySize.y = window_height;
-
 	ImGui_ImplGlfw_InitForOpenGL(window, true);      
 	ImGui_ImplOpenGL3_Init(glsl_version);	
-
 	
 	Scene scene;
+
+	//------- Main loop -------//
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -60,13 +60,13 @@ int Main::Init() {
 
 		glViewport(0, 0, window_width, window_height);
 		
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(background_color.x, background_color.y, background_color.z, background_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		
-
-		scene.Render(io.DeltaTime*time_scale);
+		scene.shader.BindUniform4f("color", glm::vec4(model_colors.x, model_colors.y, model_colors.z, model_colors.w));
 		scene.shader.BindUniform1f("ratio", ratio);
+		scene.Render();
+		
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
@@ -81,11 +81,12 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 	
 	ImGui::NewFrame();
 
-	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoNavFocus );
+	ImGui::Begin("Handy info", 0, ImGuiWindowFlags_NoNavFocus );
 	ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + (io.MousePos.x / (window_width / 2)), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
 	ImGui::Text("FPS: %.1f", 1 / io.DeltaTime);
-	ImGui::Text("Models: %d", scene->objects.size());
-	if (scene->isPaused) {
+	ImGui::Text("Models: %d", scene->scene_objects.size());
+	//Change the button text depending on the state of the scene
+	if (scene->is_paused) {
 		if (ImGui::Button("Resume")) {
 			scene->Play();
 		}
@@ -95,34 +96,39 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 			scene->Pause();
 		}
 	}
+
 	ImGui::SliderFloat("Radius", &model_radius, 0.001f, 0.5f);
 	ImGui::SliderInt("Segments", &model_segments, 8, 100);
-	
-	ImGui::SliderFloat("Time Scale", &time_scale, 0.1f, 2.0f);
+	ImGui::ColorEdit3("Background color", (float*)&background_color);
+	ImGui::ColorEdit3("Model color", (float*)&model_colors);
+
 	ImGui::End();
 	
 
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 		glfwSetWindowShouldClose(window, true);
 	}
-	if (!io.WantCaptureMouse) {
-		if (ImGui::IsMouseClicked(0)) {
-			double x, y;
-			glfwGetCursorPos(window, &x, &y);
-			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x/ 2);
-			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
-			scene->AddCircle(model_radius, x*ratio, -y, model_segments);	
-		}
-	}
-	
 	if (ImGui::IsKeyPressed(ImGuiKey_Space)) {
-		if (scene->isPaused) {
+		if (scene->is_paused) {
 			scene->Play();
 		}
 		else {
 			scene->Pause();
 		}
 	}
+
+	if (!io.WantCaptureMouse) {
+		if (ImGui::IsMouseClicked(0)) {
+			double x, y;
+			glfwGetCursorPos(window, &x, &y);
+			//Normalize the mouse coordinates to the screen space
+			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x/ 2);
+			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
+			scene->AddCircle(model_radius, x*ratio, -y, model_segments);	
+		}
+	}
+	
+	
 }
 
 int Main::Exit() {
