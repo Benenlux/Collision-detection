@@ -29,6 +29,6 @@ The dependancies were managed with `vcpkg` and I made use of the following depen
  
   Used for the math operations.
 
-  
+  Cmake was used to build and run this application
 
 
