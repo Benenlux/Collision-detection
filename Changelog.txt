@@ -28,3 +28,9 @@
 - Added optimisations in regards to how objects are updated
 - Added comments where necessary
 - Cleaned up some unused or unecessary code
+
+[08/03/2024]
+- Added proper rescaling of the window
+- Fixed a bug where circles would stay underground when resized
+- Changed the way objects are moved downwards
+- Fixed the pause button not working properly
