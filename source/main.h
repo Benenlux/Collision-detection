@@ -2,7 +2,6 @@
 
 //Standard libraries
 #include <iostream>
-#include <fstream>
 #include <string>
 
 //Graphics libraries
@@ -14,8 +13,6 @@
 
 //Math libraries
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 //Custom libraries
 #include "Scene.h"
@@ -26,10 +23,17 @@ public:
 	int Main::Init();
 
 private:
-	int window_width = 800;
-	int window_height = 600;
+	int window_height = 900;
+	int window_width = window_height * 1.78;
 	
-	void Main::Input(GLFWwindow* window, ImGuiIO& io);
+	float model_radius = 0.1f;
+	int model_segments = 16;
+
+	ImVec4 model_colors = ImVec4(1.0f, 0.5f, 0.2f, 1.0f);
+	ImVec4 background_color = ImVec4(0.2f, 0.3f, 0.3f, 1.0f);
+
+	
+	void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float ratio);
 	int Main::Exit();
 	
 };

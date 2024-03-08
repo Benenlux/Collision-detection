@@ -1,55 +1,48 @@
 #pragma once
 
 #include <vector>
-#include "graphics/Model.h"
+#include "graphics/Object.h"
 #include "graphics/VertexArray.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/VertexBufferLayout.h"
 #include "graphics/IndexBuffer.h"
-#include "graphics/shader.h"
+#include "graphics/Shader.h"
+#include "physics/Colliders.h"
 
-class Scene : private Model {
+class Scene : Collider {
 private: 
-	//To handle collission, we need to store the models in a vector so we can loop through them 
-	//Check for their coordinates, and then check if they are colliding
-	//I can do this through the translation vector, which is stored in the model class
-	//Models and terrain is stored in seperate vectors, because collission behavior is different for both
-	std::vector<Model> m_models;
-	std::vector<Model> m_terrain;
+	std::vector<float> objects_vertices;
+	std::vector<unsigned int> objects_indices;
 
+	VertexBufferLayout objects_layout;
 	
-	VertexBufferLayout terrainLayout;
-	VertexBuffer terrainVB;
-	VertexArray terrainVA;
-	IndexBuffer terrainIB;
+	VertexBuffer objectsVB;
+	VertexArray objectsVA;
+	IndexBuffer objectsIB;
 
-
-	//TODO: Add a function to add models to the scene, and parse them correctly to the buffers 
-	//Model buffers will be dynamic, so the vertices can be directly updated through the Model class. 
-
-	VertexBufferLayout modelsLayout;
-	std::vector<float> modelsVertices;
-	VertexBuffer modelsVB;
-	VertexArray modelsVA;
-	IndexBuffer modelsIB;
-
-	Shader shader;
-
-	float deltaTime = 0.0f;
-
+	unsigned scene_shader;
+	float delta_time = 0.0f;
+	int index_offset = 0;
+	
+	
 public:
-	unsigned sceneShader;
+	Shader shader;
+	
+	bool is_paused = false;
+	std::vector<Object> scene_objects;
 
 	Scene();
 	~Scene();
-	void AddModel(float height, float width, float x_coord, float y_coord);
+	void AddCircle(float radius, float x_coord, float y_coord, int segments);
 
-	void BindObjects();
+	//Update functions
+	void UpdateObject(Object* object, int object_number);
 
+	//Misc functions
+	void Pause();
+	void Play();
 
-	void RenderAll();
-	//Iterates through the models list, checks for collissions and calls the render function for each model
-	//If there is a collission, call the collission function from the rigidbody class
+	//Render functions
+	void Render();
 	void RenderObjects();
-	void RenderTerrain();
 };

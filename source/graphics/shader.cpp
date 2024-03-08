@@ -68,14 +68,29 @@ unsigned int Shader::CreateFragShader(const std::string& path) {
 	return fragmentShader;
 }  
 
+void Shader::BindUniform4f(std::string uniformName, glm::vec4 data) {
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniform4f(uniformLocation, data.x, data.y, data.z, data.w);
+}
+
 void Shader::BindUniform3f(std::string uniformName, glm::vec3 data) {
-	int vertexColorLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
-	glUniform3f(vertexColorLocation, data.x, data.y, data.z);
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniform3f(uniformLocation, data.x, data.y, data.z);
 }
 
 void Shader::BindMat4(std::string uniformName, glm::mat4 data) {
-	int vertexColorLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
-	glUniformMatrix4fv(vertexColorLocation, 1, GL_FALSE, glm::value_ptr(data));
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(data));
+}
+
+void Shader::BindUniform2f(std::string uniformName, glm::vec2 data) {
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniform3f(uniformLocation, data.x, data.y, 0);
+}
+
+void Shader::BindUniform1f(std::string uniformName, float data) {
+	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	glUniform1f(uniformLocation, data);
 }
 
 std::string Shader::Load_Shader(const std::string& path) {

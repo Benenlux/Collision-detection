@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 
-//TODO: Add a function to add vertices to the vertex buffer and update certain vertices
 class VertexBuffer {
 private:
 	unsigned int m_RenderID;
@@ -13,5 +12,5 @@ public:
 	void Create(const void* data, unsigned int size);
 	void Bind() const;
 	void Unbind() const;
-	void Update(unsigned int offset, unsigned int size, const void* data);
+	void UpdateSize(const void* data, unsigned int size);
 };
