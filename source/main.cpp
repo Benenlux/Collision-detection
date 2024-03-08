@@ -16,7 +16,7 @@ int Main::Init() {
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); 
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); 
 	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "OpenGL", NULL, NULL);
 	
 
@@ -58,14 +58,14 @@ int Main::Init() {
 
 		ImGui::Render();
 
-		glViewport(0, 0, window_width, window_height);
+		glViewport(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 		
 		glClearColor(background_color.x, background_color.y, background_color.z, background_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		scene.shader.BindUniform4f("color", glm::vec4(model_colors.x, model_colors.y, model_colors.z, model_colors.w));
 		scene.shader.BindUniform1f("ratio", ratio);
-		scene.Render();
+		scene.Render(ratio, io.DeltaTime);
 		
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -122,9 +122,11 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 			double x, y;
 			glfwGetCursorPos(window, &x, &y);
 			//Normalize the mouse coordinates to the screen space
-			x = (x - (io.DisplaySize.x / 2)) / (io.DisplaySize.x/ 2);
+			x = (x - (io.DisplaySize.x / 2)) * ratio / (io.DisplaySize.x / 2);
 			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
-			scene->AddCircle(model_radius, x*ratio, -y, model_segments);	
+
+
+			scene->AddCircle(model_radius, x, -y, model_segments);	
 		}
 	}
 	

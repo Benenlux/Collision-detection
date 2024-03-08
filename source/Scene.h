@@ -21,8 +21,9 @@ private:
 	IndexBuffer objectsIB;
 
 	unsigned scene_shader;
-	float delta_time = 0.0f;
+	float m_delta_time = 0.0f;
 	int index_offset = 0;
+	float m_ratio;
 	
 	
 public:
@@ -43,6 +44,6 @@ public:
 	void Play();
 
 	//Render functions
-	void Render();
+	void Render(float ratio, float deltaTime);
 	void RenderObjects();
 };

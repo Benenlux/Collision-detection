@@ -7,7 +7,7 @@ protected:
 
 	void CheckCollision(Object* obj1, Object* obj2);
 	void CheckIfGrounded(Object* obj);
-	void CheckIfOnEnd(Object* obj);
+	void CheckIfOnEnd(Object* obj, float ratio);
 
 private:
 	void ResolveCollision(Object* obj1, Object* obj2, float distance, float sumRadius);

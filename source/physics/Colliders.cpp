@@ -1,5 +1,5 @@
 #include "Colliders.h"
-
+#include <iostream>
 
 
 void Collider::CheckCollision(Object* obj1, Object* obj2){
@@ -41,7 +41,14 @@ void Collider::ResolveCollision(Object* obj1, Object* obj2, float distance, floa
 
 
 void Collider::CheckIfGrounded(Object* obj) {
-	if (obj->position.y - obj->radius <= -1.0f) {
+	
+	float distance = obj->position.y - obj->radius + 1.0f;
+	
+	if (distance < -0.0f) {
+		obj->Translate(0.0f, -distance);
+		obj->is_on_ground = true;
+	}
+	else if (distance == 0.0f) {
 		obj->is_on_ground = true;
 	}
 	else {
@@ -49,17 +56,17 @@ void Collider::CheckIfGrounded(Object* obj) {
 	}
 }
 
-void Collider::CheckIfOnEnd(Object* obj) {
+void Collider::CheckIfOnEnd(Object* obj, float ratio) {
 	//Check if the object is on the end of the screen, 1.78 is the width of the screen due to the aspect ratio
-	if (obj->position.x - obj->radius <= -1.78f) {
+	if (obj->position.x - obj->radius <= -ratio) {
 		obj->is_on_end = true;	
-		float distance = obj->position.x - obj->radius + 1.78f;
+		float distance = obj->position.x - obj->radius + ratio;
 		obj->Translate(-distance, 0.0f);
 		
 	}
-	else if (obj->position.x + obj->radius >= 1.78f) {
+	else if (obj->position.x + obj->radius >= ratio) {
 		obj->is_on_end = true;
-		float distance = obj->position.x + obj->radius - 1.78f;
+		float distance = obj->position.x + obj->radius - ratio;
 		obj->Translate(-distance, 0.0f);
 	}
 	else {

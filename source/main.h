@@ -23,8 +23,8 @@ public:
 	int Main::Init();
 
 private:
-	int window_height = 900;
-	int window_width = window_height * 1.78;
+	int window_width = 900;
+	int window_height = 700;
 	
 	float model_radius = 0.1f;
 	int model_segments = 16;

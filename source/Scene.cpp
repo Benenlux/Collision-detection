@@ -25,7 +25,6 @@ void Scene::AddCircle(float radius, float x_coord, float y_coord, int segments) 
 	for (int i = 0; i < object.m_vertices.size(); i++) {
 		objects_vertices.push_back(object.m_vertices[i]);
 	}
-
 	for (int i = 0; i < segments; i++) {
 		objects_indices.push_back(0 + index_offset);
 		objects_indices.push_back(i + 1 + index_offset);
@@ -43,7 +42,10 @@ void Scene::AddCircle(float radius, float x_coord, float y_coord, int segments) 
 	objectsIB.UpdateSize(objects_indices.data(), objects_indices.size());
 }
 
-void Scene::Render() {
+void Scene::Render(float ratio, float deltaTime) {
+	m_ratio = ratio;
+	m_delta_time = deltaTime;
+
 	RenderObjects();
 	glUseProgram(scene_shader);
 	objectsVA.Bind();
@@ -58,7 +60,9 @@ void Scene::RenderObjects() {
 
 	//Go through all the objects in the vector
 	for (int i = 0; i < scene_objects.size(); i++) {
-		UpdateObject(&scene_objects[i], i);
+		if (!is_paused) {
+			UpdateObject(&scene_objects[i], i);
+		}
 
 		//Go through all the vertices in the object
 		for (int j = 0; j < scene_objects[i].m_vertices.size(); j += 2) {
@@ -75,12 +79,10 @@ void Scene::RenderObjects() {
 
 void Scene::UpdateObject(Object* object, int object_number) {
 	if (object->is_on_ground == false) {
-		object->Translate(0.0f, -0.0005f);
-		CheckIfGrounded(object);
+		object->Translate(0.0f, -0.5f*m_delta_time);
 	}
-
-	//Constantly check if the object is on the end
-	CheckIfOnEnd(object);
+	CheckIfGrounded(object);
+	CheckIfOnEnd(object, m_ratio);
 
 	//If there are objects to collide with, check for collision
 	if (scene_objects.size() > 1) {
