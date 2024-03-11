@@ -1,6 +1,7 @@
 #include "Object.h"
 
-void Object::CreateCircle(float inRadius, float x_coord, float y_coord, int segments) {
+void Object::CreateCircle(float inRadius, float x_coord, float y_coord, int segments, glm::vec3 color) {
+	m_color = color;
 	radius = inRadius;
 	m_segments = segments;
 
