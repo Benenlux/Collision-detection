@@ -40,8 +40,10 @@ int Main::Init() {
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);      
 	ImGui_ImplOpenGL3_Init(glsl_version);	
+
+	float ratio = io.DisplaySize.x / io.DisplaySize.y;
 	
-	Scene scene;
+	Scene scene(&ratio, &io.DeltaTime);
 
 	//------- Main loop -------//
 
@@ -52,7 +54,7 @@ int Main::Init() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 
-		float ratio = io.DisplaySize.x / io.DisplaySize.y;
+		ratio = io.DisplaySize.x / io.DisplaySize.y;
 
 		ImGuiRender(window, io, &scene, ratio);
 
@@ -63,7 +65,6 @@ int Main::Init() {
 		glClearColor(background_color.x, background_color.y, background_color.z, background_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		scene.shader.BindUniform4f("color", glm::vec4(model_colors.x, model_colors.y, model_colors.z, model_colors.w));
 		scene.shader.BindUniform1f("ratio", ratio);
 		scene.Render(ratio, io.DeltaTime);
 		
@@ -82,10 +83,11 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 	ImGui::NewFrame();
 
 	ImGui::Begin("Handy info", 0, ImGuiWindowFlags_NoNavFocus );
-	ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + (io.MousePos.x / (window_width / 2)), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
+	//ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + (io.MousePos.x / (window_width / 2)), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
 	ImGui::Text("FPS: %.1f", 1 / io.DeltaTime);
 	ImGui::Text("Models: %d", scene->scene_objects.size());
-	//Change the button text depending on the state of the scene
+	
+
 	if (scene->is_paused) {
 		if (ImGui::Button("Resume")) {
 			scene->Play();
@@ -120,13 +122,14 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 	if (!io.WantCaptureMouse) {
 		if (ImGui::IsMouseClicked(0)) {
 			double x, y;
+
 			glfwGetCursorPos(window, &x, &y);
+
 			//Normalize the mouse coordinates to the screen space
 			x = (x - (io.DisplaySize.x / 2)) * ratio / (io.DisplaySize.x / 2);
 			y = (y - (io.DisplaySize.y / 2)) / (io.DisplaySize.y / 2);
 
-
-			scene->AddCircle(model_radius, x, -y, model_segments);	
+			scene->AddCircle(model_radius, x, -y, model_segments, glm::vec3(model_colors.x, model_colors.y, model_colors.z));
 		}
 	}
 	

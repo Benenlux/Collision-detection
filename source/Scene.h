@@ -15,15 +15,16 @@ private:
 	std::vector<unsigned int> objects_indices;
 
 	VertexBufferLayout objects_layout;
+	VertexBufferLayout objects_color_layout;
 	
 	VertexBuffer objectsVB;
-	VertexArray objectsVA;
+	unsigned int objectsVA;
 	IndexBuffer objectsIB;
 
 	unsigned scene_shader;
-	float m_delta_time = 0.0f;
+	float* m_delta_time;
 	int index_offset = 0;
-	float m_ratio;
+	float* m_ratio;
 	
 	
 public:
@@ -32,9 +33,9 @@ public:
 	bool is_paused = false;
 	std::vector<Object> scene_objects;
 
-	Scene();
+	Scene(float* ratio, float* deltaTime);
 	~Scene();
-	void AddCircle(float radius, float x_coord, float y_coord, int segments);
+	void AddCircle(float radius, float x_coord, float y_coord, int segments, glm::vec3 color);
 
 	//Update functions
 	void UpdateObject(Object* object, int object_number);
