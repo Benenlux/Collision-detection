@@ -34,3 +34,6 @@
 - Fixed a bug where circles would stay underground when resized
 - Changed the way objects are moved downwards
 - Fixed the pause button not working properly
+
+[11/03/2024]
+- Added the ability to change the color of each individual circle
