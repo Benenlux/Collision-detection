@@ -1,10 +1,11 @@
 #version 330 core
-layout (location = 0) in vec4 aPos;
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 color;
 
 uniform float ratio;
-uniform vec4 color;
 
-out vec4 vertexColor;
+
+out vec3 vertexColor;
 
 
 void main()
