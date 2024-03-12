@@ -97,7 +97,7 @@ void Scene::RenderObjects() {
 
 void Scene::UpdateObject(Object* object, int object_number) {
 	if (object->is_on_ground == false) {
-		object->Translate(0.0f, -0.5f* *m_delta_time);
+		object->Translate(0.0f, -0.5f * *m_delta_time);
 	}
 	CheckIfGrounded(object);
 	CheckIfOnEnd(object, *m_ratio);
