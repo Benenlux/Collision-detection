@@ -1,12 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-
-
-//TODO: Add a function to add indices to the index buffer
 class IndexBuffer {
-private:
-	
 	unsigned int m_count;
 	unsigned int m_RenderID;
 

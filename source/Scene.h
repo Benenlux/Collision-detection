@@ -1,21 +1,18 @@
 #pragma once
 
 #include <vector>
+
 #include "graphics/Object.h"
-#include "graphics/VertexArray.h"
 #include "graphics/VertexBuffer.h"
-#include "graphics/VertexBufferLayout.h"
 #include "graphics/IndexBuffer.h"
 #include "graphics/Shader.h"
+
 #include "physics/Colliders.h"
 
 class Scene : Collider {
 private: 
 	std::vector<float> objects_vertices;
 	std::vector<unsigned int> objects_indices;
-
-	VertexBufferLayout objects_layout;
-	VertexBufferLayout objects_color_layout;
 	
 	VertexBuffer objectsVB;
 	unsigned int objectsVA;
@@ -43,6 +40,7 @@ public:
 	//Misc functions
 	void Pause();
 	void Play();
+	void Reset();
 
 	//Render functions
 	void Render(float ratio, float deltaTime);

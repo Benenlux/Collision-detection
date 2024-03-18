@@ -3,9 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-class Object{
-public:
-
+struct Object{
 	bool is_on_ground = false;
 	bool is_on_end = false;
 	float radius;

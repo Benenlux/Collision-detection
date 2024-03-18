@@ -17,13 +17,9 @@ int Main::Init() {
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); 
-	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "OpenGL", NULL, NULL);
-	
-
-	const char* glsl_version = "#version 130";
+	GLFWwindow* window = glfwCreateWindow(900, 700, "OpenGL", NULL, NULL);
 
 	glfwMakeContextCurrent(window);
-
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -38,6 +34,8 @@ int Main::Init() {
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
+	const char* glsl_version = "#version 130";
+
 	ImGui_ImplGlfw_InitForOpenGL(window, true);      
 	ImGui_ImplOpenGL3_Init(glsl_version);	
 
@@ -46,9 +44,7 @@ int Main::Init() {
 	Scene scene(&ratio, &io.DeltaTime);
 
 	//------- Main loop -------//
-
 	while (!glfwWindowShouldClose(window)) {
-
 		glfwPollEvents();
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -83,7 +79,7 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 	ImGui::NewFrame();
 
 	ImGui::Begin("Handy info", 0, ImGuiWindowFlags_NoNavFocus );
-	//ImGui::Text("Mouse \n x: %.3f	y: %.3f", -1.0 + (io.MousePos.x / (window_width / 2)), 1.0 - io.MousePos.y / (io.DisplaySize.y / 2));
+	ImGui::Text("Click on the screen to add a circle");
 	ImGui::Text("FPS: %.1f", 1 / io.DeltaTime);
 	ImGui::Text("Models: %d", scene->scene_objects.size());
 	
@@ -98,15 +94,22 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 			scene->Pause();
 		}
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset")) {
+		scene->Reset();
+	}
 
 	ImGui::SliderFloat("Radius", &model_radius, 0.001f, 0.5f);
 	ImGui::SliderInt("Segments", &model_segments, 8, 100);
+	if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+	{
+		ImGui::SetTooltip("Determines how smooth the circle is. WARNING: A high number of segments can impact performance");
+	}
 	ImGui::ColorEdit3("Background color", (float*)&background_color);
 	ImGui::ColorEdit3("Model color", (float*)&model_colors);
 
 	ImGui::End();
 	
-
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -131,9 +134,7 @@ void Main::ImGuiRender(GLFWwindow* window, ImGuiIO& io, Scene* scene, float rati
 
 			scene->AddCircle(model_radius, x, -y, model_segments, glm::vec3(model_colors.x, model_colors.y, model_colors.z));
 		}
-	}
-	
-	
+	}	
 }
 
 int Main::Exit() {
