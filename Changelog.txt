@@ -38,3 +38,7 @@
 [11/03/2024]
 - Added the ability to change the color of each individual circle
 - Changed the way colliders check for collision
+
+[18/03/2024]
+- Improved the way vertices are updated
+- Added a button to reset the scene
